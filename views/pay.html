@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>誰付錢 | Splitmate</title>
+  <link rel="stylesheet" href="/css/pay.css">
+</head>
+<body>
+  <header class="header">
+    <div class="summary-bar">
+      <div class="summary-item">NT$5000 / NT$5000</div>
+      <div class="summary-item">剩餘 NT$<span id="remaining-amount">0</span></div>
+    </div>
+  </header>
+  <main class="main-content">
+    <form>
+      <div class="split-list">
+        <div class="split-item">
+          <input type="checkbox" id="you" name="you" checked>
+          <label for="you">你</label>
+          <div class="amounts">
+            <input type="number" value="5000" min="0" class="split-amount-input">
+            <span class="split-amount">NT$ 5000</span>
+          </div>
+        </div>
+        <div class="split-item">
+          <input type="checkbox" id="ray" name="ray">
+          <label for="ray">賴考</label>
+          <div class="amounts">
+            <input type="number" value="0" min="0" class="split-amount-input">
+            <span class="split-amount">NT$ 0</span>
+          </div>
+        </div>
+        <div class="split-item">
+          <input type="checkbox" id="mike" name="mike">
+          <label for="mike">米咔</label>
+          <div class="amounts">
+            <input type="number" value="0" min="0" class="split-amount-input">
+            <span class="split-amount">NT$ 0</span>
+          </div>
+        </div>
+        <div class="split-item">
+          <input type="checkbox" id="fatty" name="fatty">
+          <label for="fatty">胖子</label>
+          <div class="amounts">
+            <input type="number" value="0" min="0" class="split-amount-input">
+            <span class="split-amount">NT$ 0</span>
+          </div>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button type="button" class="cancel-button">取消</button>
+        <button type="submit" class="confirm-button">完成</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

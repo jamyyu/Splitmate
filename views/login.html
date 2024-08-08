@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登入|Splitmate</title>
+  <link rel="stylesheet" href="/css/login.css">
+  <script src="/js/login.js"></script>
+</head>
+<body>
+  <div class="login-container">
+    <h2><img src="">Splitmate</h2>
+    <p class="subtitle">享受與朋友歡聚的時光，我們來處理費用！</p>
+    <div class="toggle">
+      <button id="sign-in" class="toggle-button active">登入</button>
+      <button id="sign-up" class="toggle-button">註冊</button>
+    </div>
+    <form id="sign-in-form">
+      <input type="email" id="sign-in-email" placeholder="電子郵件" required>
+      <input type="password" id="sign-in-password" placeholder="密碼" required>
+      <div id="sign-in-response" class="sign-in-font hide">電子郵件或密碼錯誤</div>
+      <button type="submit" id="sign-in-button">登入</button>
+    </form>
+    <form id="sign-up-form">
+      <input type="text" id="sign-up-name" placeholder="姓名" required>
+      <input type="email" id="sign-up-email" placeholder="電子郵件" required>
+      <input type="password" id="sign-up-password" placeholder="密碼" required>
+      <div id="sign-up-response" class="sign-up-font hide">Email已經註冊帳戶</div>
+      <button type="submit" id="sign-up-button">註冊</button>
+    </form>
+  </div>
+</body>
+</html>
