@@ -1,0 +1,17 @@
+import { Database } from '../dbconfig.js';
+
+
+export const createMember = async (name, email) => {
+  const query = 'INSERT INTO member (name, email) VALUES (?, ?)';
+  const results = await Database.executeQuery(query, [name, email]);
+  console.log('createMember',results);
+  return results.insertId;
+};
+
+
+export const getMemberByEmail = async (email) => {
+  const query = 'SELECT id, email FROM member WHERE email = ?';
+  const results = await Database.executeQuery(query, [email]);
+  console.log('getMemberByEmail',results);
+  return results.length ? results[0] : null; 
+};
