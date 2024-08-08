@@ -1,0 +1,123 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),url('/images/index-background.jpg') no-repeat center center;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+}
+
+.login-container {
+  background-color: #181818;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 300px;
+  text-align: center;
+  margin-bottom: 150px;
+}
+
+.subtitle {
+  color: #666666; 
+  font-size: 14px; 
+  margin-bottom: 20px; 
+  text-align: center;
+}
+
+.login-container img {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+.login-container h2 {
+  color: white;
+  margin: 0 0 20px;
+  font-size: 24px;
+}
+
+.toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #B3B3B3;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 10px;
+  padding-bottom: 5px;
+  position: relative;
+}
+
+.toggle-button.active {
+  color: white;
+}
+
+.toggle-button:hover::after,
+.toggle-button.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1DB954;
+}
+
+.toggle-button:hover {
+  color: #1DB954;
+}
+
+.login-container input[type="text"], .login-container input[type="password"], .login-container input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.login-container button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #1DB954;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-container button[type="submit"]:hover {
+  background-color: #1AA34A;
+}
+
+.login-container a {
+  color: #B3B3B3;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}
+
+.sign-in-font {
+  font-size: 14px;
+  color: red;
+}
+
+.sign-up-font {
+  font-size: 14px;
+  color: red;
+}
+
+.hide {
+  display: none;
+}

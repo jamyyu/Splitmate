@@ -1,0 +1,117 @@
+.main-content {
+  max-width: 700px;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.activity {
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.image-section {
+  position: relative;
+}
+
+.activity-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #52bc8b;
+  color: white;
+  cursor: pointer;
+}
+
+.settlement-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #52bc8b;
+  color: white;
+  cursor: pointer;
+}
+
+.edit-btn:hover, .settlement-btn:hover {
+  background-color: #1AA34A;
+}
+
+.activity-details {
+  padding: 20px;
+  flex: 1;
+}
+
+.activity-details h2 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.activity-item {
+  margin-bottom: 10px;
+}
+
+.activity-description {
+  display: flex;
+  align-items: center;
+}
+
+.activity-icon {
+  margin-right: 10px;
+}
+
+.activity-cost {
+  margin-left: auto;
+  color: #e74c3c; /* 花費顏色 */
+}
+
+.activity-payment {
+  color: #888;
+}
+
+.add-button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.add-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background-color: #52bc8b;; 
+  color: white;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+  cursor: pointer;
+  outline: none;
+  font-size: 48px;
+}
+
+.add-button:hover {
+  background-color: #1AA34A; 
+}
+
+.add-button:focus {
+  outline: none;
+}

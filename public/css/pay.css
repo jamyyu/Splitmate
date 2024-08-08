@@ -1,0 +1,96 @@
+.summary-bar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffa726;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  font-size: 18px;
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+form {
+  width: 100%;
+  max-width: 800px;
+}
+
+.split-list {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.split-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.split-item label {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.amounts {
+  display: flex;
+  align-items: center;
+}
+
+.split-amount-input {
+  width: 60px;
+  padding: 5px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.split-amount {
+  margin-left: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-button,
+.confirm-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: #ccc;
+  color: black;
+}
+
+.confirm-button {
+  background-color: #52bc8b;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #1AA34A;
+}
+
+.cancel-button:hover {
+  background-color: #999;
+}

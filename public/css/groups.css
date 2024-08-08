@@ -1,0 +1,73 @@
+.main-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px 20px 30px;
+  box-sizing: border-box;
+}
+
+.group-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-auto-rows: 180px;
+  gap: 20px;
+  width: 100%;
+  max-width: 700px; /* 可以根據需要設置最大寬度 */
+  flex: 1;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.group-card {
+  height: 180px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.group-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.group-name {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+.button-container {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.create-group-button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #52bc8b; 
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.create-group-button:hover {
+  background-color: #1AA34A; 
+}
