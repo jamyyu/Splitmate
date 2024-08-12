@@ -31,7 +31,6 @@ function handleImageUpload() {
         console.error("請選擇有效的圖像文件");
       }
     } else {
-      console.error("未選擇文件或文件列表為空");
       // 清除圖片預覽
       if (preview) {
         preview.src = '/images/pink.jpeg';
@@ -107,8 +106,14 @@ function setCurrency() {
 
 
 function parseJwt(token) {
-  // 直接從 token 中提取 payload 部分，解碼並解析為 JSON
-  return JSON.parse(atob(token.split('.')[1]));
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join('')
+  );
+  return JSON.parse(jsonPayload);
 }
 
 
@@ -117,6 +122,7 @@ function renderUser() {
   userData = parseJwt(token);
   memberName = document.querySelector('.member-name');
   memberName.textContent = userData['name'];
+  console.log(userData.name);
   const memberEmailSpan = document.createElement('span');
   memberEmailSpan.textContent = ` (${userData['email']})`;
   memberName.appendChild(memberEmailSpan);
@@ -124,9 +130,12 @@ function renderUser() {
 
 
 function handleSubmit() {
-  const groupForm = document.getElementById('groupForm')
+  const groupForm = document.getElementById('groupForm');
+  const submitButton = groupForm.querySelector('button[type="submit"]');
   groupForm.addEventListener('submit',(e) => {
     e.preventDefault();
+    // 避免重複提交
+    submitButton.disabled = true;
     // 獲取群組名稱
     const groupName = document.getElementById('group-name').value;
     // 獲取圖片文件
@@ -156,6 +165,9 @@ function handleSubmit() {
     // 表單數據發送到後端
     fetch('/api/group', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       body: formData
     })
     .then(response => response.json())
@@ -173,6 +185,10 @@ function handleSubmit() {
       } else {
         alert('發生錯誤: ' + error.message);
       }
+    })
+    .finally(() => {
+      // 重新啟用提交按鈕
+      submitButton.disabled = false;
     });
   });
 }
