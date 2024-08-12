@@ -1,0 +1,129 @@
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #f9f9f9;
+  max-width:700px;
+  flex: 1;
+}
+
+.form-container {
+  width: 700px;
+  padding-top: 20px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  background-color: #e0e0e0;
+  border: none;
+  cursor: pointer;
+}
+
+.tab.active {
+  background-color: #00a651;
+  color: white;
+}
+
+.form-group-inline {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-group-inline .form-group {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.form-group-inline .form-group:last-child {
+  margin-right: 0;
+}
+
+.underline-input {
+  border: none;
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+  padding: 5px 0;
+  width: 100%;
+  height: 31.5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  flex: 1;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.underline-input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  background-color: #f9f9f9;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.select-container {
+  display: flex;
+}
+
+select {
+  flex: 1;
+}
+
+.form-group input[type="file"] {
+  border: none;
+}
+
+.form-group .add-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #52bc8b;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.form-group .add-button:hover {
+  background-color: #1AA34A;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px 0;
+  background-color: #52bc8b;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #1AA34A;
+}

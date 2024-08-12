@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人檔案|Splitmate</title>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <script src="/js/header.js"></script>
+    <script src="/js/profile.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="/images/pink.jpeg" alt="Splitmate Logo">
+    </div>
+    <div class="page-title">個人檔案</div>
+    <div class="user-info">
+      <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+      <div class="dropdown-menu" id="dropdown-menu">
+        <div class="menu-item" data-action="profile">個人檔案</div>
+        <div class="menu-item" data-action="groups">我的群組</div>
+        <div class="menu-item" data-action="payments">我的收款</div>
+        <div class="menu-item" data-action="logout">登出</div>
+      </div>
+    </div>
+  </header>
+  <main class="main-content">
+    <div class="profile-container">
+      <form class="profile-form">
+        <div class="profile-picture">
+          <img src="/images/profile-icon.png"  alt="Profile Picture" id="profile-picture-preview" class="profile-picture-img">
+          <label for="profile-picture-upload" class="edit-button">
+            <img src="/images/edit-16.png" alt="Edit" class="edit-icon">
+          </label>
+          <input type="file" id="profile-picture-upload" name="profile_picture" style="display: none;" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label for="name">姓名</label>
+          <input type="text" id="name" name="name">
+        </div>
+        <button type="submit" class="save-button">儲存</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

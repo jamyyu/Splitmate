@@ -1,0 +1,30 @@
+{
+  "name": "splitmate",
+  "version": "1.0.0",
+  "description": "A web application for splitting bills among friends.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "split",
+    "bills"
+  ],
+  "author": "Jamy",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.617.0",
+    "@aws-sdk/s3-request-presigner": "^3.617.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.10.3",
+    "sharp": "^0.33.4",
+    "validator": "^13.12.0"
+  }
+}

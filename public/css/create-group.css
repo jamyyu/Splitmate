@@ -1,0 +1,157 @@
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 30px;
+  max-width: 700px;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.top-section {
+  flex: 1;
+}
+
+.create-group-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* 個人資料部分 */
+.profile-section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.profile-image {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+#imageUpload {
+  display: block;
+  margin: 10px auto 0; /* 置中 */
+  cursor: pointer;
+}
+
+/* 群組設置部分 */
+.group-section {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.group-section label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#group-name {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.group-members-title,
+.currency-title {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.currency-info {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.members {
+  margin-bottom: 5px;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+}
+
+.member-name {
+  font-weight: bold;
+}
+
+.member-inputs {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.member-inputs input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #f00;
+  cursor: pointer;
+}
+
+.add-person {
+  display: block;
+  color: #007bff;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.add-person:hover {
+  text-decoration: underline;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+}
+
+.button-container {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.create-newgroup-button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #52bc8b; 
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.create-newgroup-button:hover {
+  background-color: #1AA34A; 
+}
