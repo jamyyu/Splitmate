@@ -24,6 +24,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/login.html'));
 });
+//個人檔案頁面
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/profile.html'));
+});
 //我的群組頁面
 app.get('/groups', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/groups.html'));
