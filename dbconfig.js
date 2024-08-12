@@ -15,7 +15,9 @@ const pool = mysql.createPool({
   database: 'Splitmate',
   waitForConnections: true,
   connectionLimit: 20, 
-  queueLimit: 0 // 等待連線請求數，0 表示不限制
+  queueLimit: 0, // 等待連線請求數，0 表示不限制
+  connectTimeout: 10000, // 10秒超時
+  idleTimeout: 60000 // 60秒空閒超時
 });
 
 // 使用連接池查詢
