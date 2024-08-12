@@ -22,11 +22,13 @@ body {
 
 .logo img {
   height: 40px;
+  cursor: pointer;
 }
 
 .user-info {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .page-title {
@@ -40,6 +42,7 @@ body {
   width: 40px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: white;
 }
 
 .dropdown-menu {
