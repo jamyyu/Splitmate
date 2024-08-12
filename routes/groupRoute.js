@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { uploadGroupData } from '../controllers/groupController.js';
+import { uploadGroupData, getGroupsData } from '../controllers/groupController.js';
 
 const router = express.Router();
 
@@ -10,6 +10,8 @@ const upload = multer({ storage: storage });
 
 
 router.post('/api/group',upload.single('image'), uploadGroupData);
+
+router.get('/api/group', getGroupsData);
 
 
 
