@@ -4,10 +4,18 @@ window.onload = function() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  updateProfilePicture();
+  // 點擊logo回我的群組
+  const logo = document.querySelector('.logo img');
+  if (logo) {
+    logo.addEventListener('click', () => {
+      window.location.href = '/groups';
+    });
+  }
+  // 點擊頭像顯示或隱藏下拉菜單
   const profilePic = document.getElementById('profile-pic');
   const dropdownMenu = document.getElementById('dropdown-menu');
 
-  // 點擊頭像顯示或隱藏下拉菜單
   profilePic.addEventListener('click', () => {
     dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
   });
@@ -26,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       switch (action) {
         case 'profile':
           // 跳轉到個人檔案頁面
-          console.log('個人檔案');
+          window.location.href = '/profile';
           break;
         case 'groups':
           window.location.href = '/groups';
@@ -67,3 +75,26 @@ function checkAuth() {
   })
 }
 
+
+function parseJwt(token) {
+  // 直接從 token 中提取 payload 部分，解碼並解析為 JSON
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join('')
+  );
+  return JSON.parse(jsonPayload);
+}
+
+
+function updateProfilePicture() {
+  const token = localStorage.getItem('token');
+  const userData = parseJwt(token);
+  const imageName = userData.imageName;
+  if (imageName) {
+    const profilePic = document.getElementById('profile-pic');
+    profilePic.src = 'https://d3q4cpn0fxi6na.cloudfront.net/' + imageName;
+  }
+}
