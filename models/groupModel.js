@@ -9,9 +9,3 @@ export const createGroup = async (groupName, mainCurrency, imageName) => {
 };
 
 
-export const getGroup = async (groupId) => {
-  const query = 'SELECT id, name, main_currency, image_name FROM SplitGroup WHERE id = ?';
-  const results = await Database.executeQuery(query, [groupId]);
-  console.log('getGroup',results);
-  return results.length ? results : null; 
-};
