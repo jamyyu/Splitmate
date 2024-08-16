@@ -43,7 +43,7 @@ export const uploadGroupData = async (req, res) => {
         return res.status(500).json({ 'message': 'Image upload failed', 'details': data });
       }
     }
-    // 將 req.body 轉換為普通物件
+    // 將 req.body 轉換為普通
     const plainBody = convertToPlainObject(req.body);
     console.log(plainBody);
     console.log(imageName);
@@ -138,7 +138,6 @@ export const getGroupData = async (req, res) => {
       main_currency: results[0].main_currency,
       image_name: results[0].group_image_name,
     };
-
     // 提取所有成員資料
     const memberData = results.map(result => ({
       member_id: result.member_id,
