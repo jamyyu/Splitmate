@@ -1,96 +1,73 @@
-.summary-bar {
-  display: flex;
-  justify-content: space-between;
-  background-color: #ffa726;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.summary-item {
-  font-size: 18px;
-  color: white;
-}
-
 .main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+}
+
+section {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: #f9f9f9;
 }
 
-form {
-  width: 100%;
-  max-width: 800px;
-}
-
-.split-list {
+.pay-section {
+  width: 700px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
 }
 
-.split-item {
+.pay-header {
+  background-color: #ffb85c;
+  padding: 15px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.pay-list {
+  padding: 20px;
+  flex: 1;
+}
+
+.pay-item {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.split-item label {
-  flex: 1;
-  margin-left: 10px;
-}
-
-.amounts {
-  display: flex;
-  align-items: center;
-}
-
-.split-amount-input {
-  width: 60px;
-  padding: 5px;
-  margin-left: 10px;
-  border: 1px solid #ccc;
+.amount {
+  background-color: #e6e6e6;
+  padding: 10px;
   border-radius: 4px;
+  width: 80px;
+  text-align: center;
 }
 
-.split-amount {
-  margin-left: 10px;
-}
-
-.action-buttons {
+.pay-buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  padding: 20px;  
 }
 
-.cancel-button,
-.confirm-button {
+.cancel-button, .confirm-button {
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 4px;
   cursor: pointer;
+  margin: 10px;
+  width: 340px;
 }
 
 .cancel-button {
-  background-color: #ccc;
-  color: black;
+  background-color: #e0e0e0;
 }
 
 .confirm-button {
-  background-color: #52bc8b;
+  background-color: #4caf50;
   color: white;
-}
-
-.confirm-button:hover {
-  background-color: #1AA34A;
-}
-
-.cancel-button:hover {
-  background-color: #999;
 }
