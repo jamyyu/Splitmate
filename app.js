@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import userRoutes from './routes/userRoute.js';
 import groupRoutes from './routes/groupRoute.js';
+import expenseRoutes from './routes/expenseRoute.js';
 import { get404Page } from './controllers/error.js';
 
 
@@ -53,6 +54,8 @@ app.get('/group/:groupId/create-record/pay', (req, res) => {
 app.use('/', userRoutes);
 //群組 API
 app.use('/', groupRoutes);
+//費用 API
+app.use('/', expenseRoutes);
 
 
 
