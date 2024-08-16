@@ -1,59 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>誰付錢 | Splitmate</title>
-  <link rel="stylesheet" href="/css/pay.css">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>誰付錢|Splitmate</title>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/pay.css">
+    <script src="/js/header.js"></script>
+    <script src="/js/pay.js" defer></script>
 </head>
 <body>
   <header class="header">
-    <div class="summary-bar">
-      <div class="summary-item">NT$5000 / NT$5000</div>
-      <div class="summary-item">剩餘 NT$<span id="remaining-amount">0</span></div>
+    <div class="logo">
+      <img src="/images/pink.jpeg" alt="Splitmate Logo">
+    </div>
+    <div class="page-title">誰付錢</div>
+    <div class="user-info">
+      <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+      <div class="dropdown-menu" id="dropdown-menu">
+        <div class="menu-item" data-action="profile">個人檔案</div>
+        <div class="menu-item" data-action="groups">我的群組</div>
+        <div class="menu-item" data-action="payments">我的收款</div>
+        <div class="menu-item" data-action="logout">登出</div>
+      </div>
     </div>
   </header>
   <main class="main-content">
-    <form>
-      <div class="split-list">
-        <div class="split-item">
-          <input type="checkbox" id="you" name="you" checked>
-          <label for="you">你</label>
-          <div class="amounts">
-            <input type="number" value="5000" min="0" class="split-amount-input">
-            <span class="split-amount">NT$ 5000</span>
+    <section class="pay-section">
+      <div class="pay-header">
+        <div class="remaining-info">剩餘 NT$0 </div>
+      </div>
+      <div class="pay-list">
+        <div class="pay-item">
+          <div>
+            <input type="checkbox" id="payer1" checked>
+            <label for="payer1">你</label>
           </div>
+          <div class="amount">NT$ 0</div>
         </div>
-        <div class="split-item">
-          <input type="checkbox" id="ray" name="ray">
-          <label for="ray">賴考</label>
-          <div class="amounts">
-            <input type="number" value="0" min="0" class="split-amount-input">
-            <span class="split-amount">NT$ 0</span>
+        <div class="pay-item">
+          <div>
+            <input type="checkbox" id="payer2">
+            <label for="payer2">Kyrie</label>
           </div>
+          <div class="amount">NT$</div>
         </div>
-        <div class="split-item">
-          <input type="checkbox" id="mike" name="mike">
-          <label for="mike">米咔</label>
-          <div class="amounts">
-            <input type="number" value="0" min="0" class="split-amount-input">
-            <span class="split-amount">NT$ 0</span>
+        <div class="pay-item">
+          <div>
+            <input type="checkbox" id="payer3">
+            <label for="payer3">Ruby</label>
           </div>
+          <div class="amount">NT$</div>
         </div>
-        <div class="split-item">
-          <input type="checkbox" id="fatty" name="fatty">
-          <label for="fatty">胖子</label>
-          <div class="amounts">
-            <input type="number" value="0" min="0" class="split-amount-input">
-            <span class="split-amount">NT$ 0</span>
+        <div class="pay-item">
+          <div>
+            <input type="checkbox" id="payer4">
+            <label for="payer4">阿周</label>
           </div>
+          <div class="amount">NT$</div>
+        </div>
+        <div class="pay-item">
+          <div>
+            <input type="checkbox" id="payer5">
+            <label for="payer5">周廷毅</label>
+          </div>
+          <div class="amount">NT$</div>
+        </div>
+        <div class="pay-item">
+          <div>
+            <input type="checkbox" id="payer6">
+            <label for="payer6">Lucas</label>
+          </div>
+          <div class="amount">NT$</div>
         </div>
       </div>
-      <div class="action-buttons">
-        <button type="button" class="cancel-button">取消</button>
-        <button type="submit" class="confirm-button">完成</button>
+      <div class="pay-buttons">
+        <button class="cancel-button">取消</button>
+        <button class="confirm-button">完成</button>
       </div>
-    </form>
+    </section>
   </main>
 </body>
 </html>
