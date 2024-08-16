@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { uploadFileToS3 } from '../services/S3.js';
-import { createGroup, getGroup } from '../models/groupModel.js';
+import { createGroup } from '../models/groupModel.js';
 import { createMember, getMemberByEmail } from '../models/memberModel.js';
 import { getUserByEmail } from '../models/userModel.js';
 import { addMemberToGroup, getGroupByUserId, getMemberByGroupId} from '../models/groupMemberModel.js';
@@ -43,7 +43,7 @@ export const uploadGroupData = async (req, res) => {
         return res.status(500).json({ 'message': 'Image upload failed', 'details': data });
       }
     }
-    // 將 req.body 轉換為普通對象
+    // 將 req.body 轉換為普通物件
     const plainBody = convertToPlainObject(req.body);
     console.log(plainBody);
     console.log(imageName);
@@ -56,36 +56,39 @@ export const uploadGroupData = async (req, res) => {
     // 資料存入群組資料庫
     const groupResults = await createGroup(plainBody.groupName, plainBody.mainCurrency, imageName);
     let groupId = groupResults;
-    console.log('groupId',groupId);
     // 資料存入成員資料庫
     const memberResults = await Promise.all(plainBody.members.map(async member => {
       let memberEmail = member.email;
+      let memberName = member.name;
       let memberId;
       let memberData = await getMemberByEmail(memberEmail);
-      if (!memberData){
-        memberId = await createMember(member.name, memberEmail);
-      }else{
+      if (!memberData) {
+        // 如果這個email尚未註冊過，則創建新成員
+        memberId = await createMember(memberEmail);
+      } else {
+        // 如果這個email已經註冊過，則使用現有的成員ID
         memberId = memberData.id;
       }
-      console.log('memberId', memberId);
-      return {memberId, memberEmail};
+      return { memberId, memberEmail, memberName };
     }));
     // 資料存入群組成員關聯資料庫
-      await Promise.all(memberResults.map(async ({ memberId, memberEmail }, index) => {
+    await Promise.all(memberResults.map(async ({ memberId, memberEmail, memberName }, index) => {
       let userId = null;
       const userResults = await getUserByEmail(memberEmail);
       if (userResults) {
         userId = userResults.id;
       }
-      const role = index === 0 ? 'admin' : 'member';
-      await addMemberToGroup(groupId, memberId, userId, role);
-    }));    
+      const role = index === 0 ? 'admin' : 'member'; // 第一個成員設置為群組管理員
+      // 將成員加入群組
+      await addMemberToGroup(groupId, memberId, memberName, userId, role);
+    }));
+
     res.status(200).json({ ok: true });
   } catch (error) {
-    console.error('Error uploading file:', error);
-    return res.status(500).send('Error uploading file');
+    console.error('Error saving members or adding them to the group:', error);
+    return res.status(500).send('Error saving members or adding them to the group');
   }
-};
+}
 
 
 export const getGroupsData = async (req, res) => {
@@ -96,36 +99,57 @@ export const getGroupsData = async (req, res) => {
     const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
     userId = payload.id;
   } catch (error) {
+    console.error('JWT 驗證失敗:', error);
     return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
   }
   // 以 userId 取得其所在 groupId 取得群組名稱跟圖片
   try {
-    const groupIdResults = await getGroupByUserId(userId);
+    const groupsData = await getGroupByUserId(userId);
     // 檢查是否有群組
-    if (groupIdResults === null) {
+    if (!groupsData || groupsData.length === 0) {
       return res.status(200).json({ data: [], message: 'No groups found' });
     }
-    const groupsData = await Promise.all(groupIdResults.map(async group => {
-      let groupId = group.splitgroup_id;
-      let groupData = await getGroup(groupId);
-      groupData = groupData[0];
-      //let memberIdResults = await getMemberByGroupId(groupId);
-      //let memberId = memberIdResults.map(member => member.member_id);
-      return groupData;
-    }));
-    console.log('結果',groupsData);
-    // image_name 改成 imageUrl
-    const updatedgroupsData = groupsData.map(data => {
-      const imageUrl = 'https://d3q4cpn0fxi6na.cloudfront.net/' + data.image_name;
-      return {
-        ...data,  // 保留其他字段
-          image_url: imageUrl // 添加新的 image_url 字段
-      };
+    // image_name 改成 image_url
+    const updatedGroupsData = groupsData.map(({ image_name, ...rest }) => {
+      const imageUrl = `https://d3q4cpn0fxi6na.cloudfront.net/${image_name}`;
+      return { ...rest, image_url: imageUrl }; // 使用解構賦值並添加新的 image_url 字段
     });
-    console.log('結果',updatedgroupsData);
-    res.status(200).json({ data: updatedgroupsData });
+    console.log('結果', updatedGroupsData);
+    res.status(200).json({ data: updatedGroupsData });
   } catch (error) {
-    return res.status(400).json({ error: true, message: error });
+    console.error('資料庫查詢失敗:', error);
+    return res.status(400).json({ error: true, message: error.message || error });
   }
-}
+};
+
+
+export const getGroupData = async (req, res) => {
+  // 獲取路由中的 groupId 參數
+  const groupId = req.params.groupId;  
+  try {
+    const results = await getMemberByGroupId(groupId);
+    if (results.length === 0) {
+      return res.status(404).json({ error: true, message: 'Group not found' });
+    }
+    // 提取群組的基本資料
+    const groupData = {
+      id: results[0].splitgroup_id,
+      name: results[0].group_name,
+      main_currency: results[0].main_currency,
+      image_name: results[0].group_image_name,
+    };
+
+    // 提取所有成員資料
+    const memberData = results.map(result => ({
+      member_id: result.member_id,
+      member_name: result.member_name,
+      role: result.role,
+      user_id: result.user_id,
+      user_name: result.user_name
+    }));
+    res.status(200).json({ groupData, memberData });
+  } catch (error) {
+    res.status(500).json({ error: true, message: 'Internal Server Error' });
+  }
+};
 
