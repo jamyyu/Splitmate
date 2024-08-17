@@ -3,8 +3,6 @@ services:
     build: .
     container_name: app
     command: npm start
-    volumes:
-      - .:/app
     expose:
       - "3000"
     env_file:
