@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import userRoutes from './routes/userRoute.js';
 import groupRoutes from './routes/groupRoute.js';
+import expenseRoutes from './routes/expenseRoute.js';
 import { get404Page } from './controllers/error.js';
 
 
@@ -44,6 +45,10 @@ app.get('/group/:groupId', (req, res) => {
 app.get('/group/:groupId/create-record', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/create-record.html'));
 });
+//花費紀錄頁面
+app.get('/record/:expenseId', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/record.html'));
+});
 //分攤成員及比例設定頁面
 app.get('/group/:groupId/create-record/pay', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/pay.html'));
@@ -53,6 +58,8 @@ app.get('/group/:groupId/create-record/pay', (req, res) => {
 app.use('/', userRoutes);
 //群組 API
 app.use('/', groupRoutes);
+//費用 API
+app.use('/', expenseRoutes);
 
 
 

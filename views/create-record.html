@@ -16,7 +16,7 @@
     </div>
     <div class="page-title">新增紀錄</div>
     <div class="user-info">
-      <img src="/images/jamy.jpeg" alt="Profile Picture" class="profile-pic" id="profile-pic">
+      <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
       <div class="dropdown-menu" id="dropdown-menu">
         <div class="menu-item" data-action="profile">個人檔案</div>
         <div class="menu-item" data-action="groups">我的群組</div>
@@ -31,43 +31,67 @@
         <button class="tab active">花費</button>
         <button class="tab">轉帳</button>
       </div>
-      <form>
-        <div class="form-group-inline">
+      <form id="expense-form">
+        <div class="form-group-inline-time">
           <div class="form-group">
-            <label for="date">日期</label>
-            <input type="date" id="date" name="date" class="underline-input">
+            <div class="input-group">
+              <label for="date" id="date-label">日期</label>
+              <input type="date" id="date" name="date" class="underline-input">
+            </div>
           </div>
           <div class="form-group">
-            <label for="time">時間</label>
-            <input type="time" id="time" name="time" class="underline-input">
+            <div class="input-group">
+              <label for="time" id="time-label">時間</label>
+              <input type="time" id="time" name="time" class="underline-input">
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="item">品項</label>
-          <input type="text" id="item" name="item">
+          <div class="input-group">
+            <div class="icon-dropdown">
+              <button class="icon-button" id="category-button">食</button>
+              <div class="dropdown-content" id="category-dropdown">
+                <div class="dropdown-item" data-value="食">食</div>
+                <div class="dropdown-item" data-value="衣">衣</div>
+                <div class="dropdown-item" data-value="住">住</div>
+                <div class="dropdown-item" data-value="行">行</div>
+                <div class="dropdown-item" data-value="育">育</div>
+                <div class="dropdown-item" data-value="樂">樂</div>
+              </div>
+            </div>
+            <input type="text" id="item" name="item" placeholder="品項" class="text-input">
+          </div>
         </div>
         <div class="form-group">
-          <label for="amount">金額</label>
-          <input type="number" id="amount" name="amount" placeholder="NT$">
+          <div class="input-group">
+            <div class="icon-dropdown">
+              <button class="icon-button" id="currency-display">TWD</button>
+              <div class="dropdown-content" id="currency-dropdown">
+                <input type="text" id="currency-search" placeholder="搜尋貨幣" class="search-input">
+                <!-- 選項在 JavaScript 中生成 -->
+              </div>
+            </div>
+            <input type="number" id="amount" name="amount" placeholder="金額" class="text-input" pattern="[0-9]*" inputmode="decimal" min="0" required>
+          </div>
         </div>
         <div class="form-group">
           <label for="payer">誰付錢</label>
           <div class="select-container">
-            <select id="payer" name="payer">
-              <option value="you">你</option>
-              <option value="other">其他</option>
-            </select>
+            <div class="selectBtn" id="payer"></div>
             <button type="button" class="add-button">➔</button>
+            <div class="optionGroup" id="payer-options">
+              <!-- 動態生成的選項添加到這裡 -->
+            </div>
           </div>
         </div>
         <div class="form-group">
           <label for="split">分給誰</label>
           <div class="select-container">
-            <select id="split" name="split">
-              <option value="equal">平均分攤</option>
-              <option value="custom">自訂</option>
-            </select>
+            <div class="selectBtn" id="split"></div>
             <button type="button" class="add-button">➔</button>
+            <div class="optionGroup" id="split-options">
+              <!-- 動態生成的選項添加到這裡 -->
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -76,9 +100,12 @@
         </div>
         <div class="form-group">
           <label for="image">上傳圖片</label>
-          <input type="file" id="image" name="image">
+          <input type="file" id="image" name="image" accept="image/*">
         </div>
-        <button type="submit" class="submit-button">新增</button>
+        <div class="button-container">
+          <button class="cancel-button">取消</button>
+          <button type="submit" class="submit-button">新增</button>
+        </div>
       </form>
     </div>
   </main>

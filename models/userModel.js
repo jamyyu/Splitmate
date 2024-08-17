@@ -28,16 +28,3 @@ export const updateUserData = async (name, image_name, email) => {
   console.log('updateUserData',results);
   return results 
 };
-
-//export const updateUserData = async (name, image_name, id) => {
-  //const query = 'UPDATE user SET name = ?, image_name = ? WHERE id = ?';
-  
-  //try {
-    //const results = await Database.executeQuery(query, [name, image_name, id]);
-    //console.log('User data updated successfully:', results);
-    //return results;
-  //} catch (error) {
-    //console.error('Error updating user data:', error);
-    //throw new Error('Failed to update user data');
-  //}
-//};

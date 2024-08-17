@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'logout':
           // 執行登出操作，跳轉到登入頁面
           localStorage.removeItem("token");
+          sessionStorage.removeItem('groupData');
+          sessionStorage.removeItem('memberData');
           window.location.href = '/'; 
           break;
         default:
