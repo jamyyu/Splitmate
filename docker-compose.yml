@@ -4,7 +4,7 @@ services:
     container_name: app
     command: npm start
     volumes:
-      - .:/app:ro
+      - .:/app
     expose:
       - "3000"
     env_file:
