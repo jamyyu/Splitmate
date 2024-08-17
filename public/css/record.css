@@ -1,0 +1,103 @@
+.expense-main {
+  padding: 20px;
+  max-width: 700px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.expense-info {
+  margin: 20px;
+  width: 700px;
+  flex: 1;
+}
+
+.expense-date {
+  display: flex;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  justify-content:flex-start;
+}
+
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+}
+
+.item-name {
+  font-weight: bold;
+}
+
+.item-amount {
+  color: #e74c3c;
+}
+
+.payer-info, .debtor-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.payer-icon, .debtor-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: #ccc; /* 可以根據需要更改顏色 */
+  margin: 10px 0;  /* 控制分隔線的上下間距 */
+}
+
+.creation-info {
+  display: flex;
+  font-size: 0.9em;
+  color: #7f8c8d;
+  text-align: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.delete-button, .edit-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.delete-button {
+  width: 80%;
+  padding: 10px 20px;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0px 20px 10px;
+}
+
+.edit-button {
+  width: 80%;
+  padding: 10px 20px;
+  background-color: #52bc8b;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0px 20px 10px;
+}
+
