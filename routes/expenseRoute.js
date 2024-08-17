@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { getExchangeRate, uploadExpenseData } from '../controllers/expenseController.js';
+import { getExchangeRate, uploadExpenseData, getExpenseData } from '../controllers/expenseController.js';
 
 const router = express.Router();
 
@@ -13,6 +13,6 @@ router.get('/api/expense/exchange-rate', getExchangeRate);
 
 router.post('/api/expense',upload.single('image'), uploadExpenseData)
 
-router.get('/api/expense/:expenseId')
+router.get('/api/expense/:groupId', getExpenseData)
 
 export default router;
