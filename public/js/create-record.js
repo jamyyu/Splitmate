@@ -334,9 +334,11 @@ function initializeCustomSelect(selectBtnId, optionGroupId, multiple, options) {
 
 function clickCancelBtn() {
   const CancelBtn = document.querySelector('.cancel-button');
+  const groupData = JSON.parse(sessionStorage.getItem('groupData'));
+  const groupId = groupData.id;
   CancelBtn.addEventListener('click',(e) => {
     e.preventDefault(); // 防止預設行為
-    window.history.back();  // 回到上一頁
+    window.location.href = `/group/${groupId}`;
   })
 }
 
@@ -418,7 +420,7 @@ function clickSubmitBtn() {
       if (response.ok) {
         // 成功處理後的操作
         alert('紀錄已成功新增');
-        window.history.back();
+        window.location.href = `/group/${groupId}`; 
       } else {
         // 顯示錯誤信息
         alert(`新增失敗: ${result.message}`);
