@@ -13,6 +13,6 @@ router.get('/api/expense/exchange-rate', getExchangeRate);
 
 router.post('/api/expense',upload.single('image'), uploadExpenseData)
 
-
+router.get('/api/expense/:expenseId')
 
 export default router;
