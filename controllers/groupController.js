@@ -102,8 +102,8 @@ export const getGroupsData = async (req, res) => {
     console.error('JWT 驗證失敗:', error);
     return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
   }
-  // 以 userId 取得其所在 groupId 取得群組名稱跟圖片
   try {
+    // 以 userId 取得其所在 groupId 取得群組名稱跟圖片
     const groupsData = await getGroupByUserId(userId);
     // 檢查是否有群組
     if (!groupsData || groupsData.length === 0) {
@@ -124,9 +124,19 @@ export const getGroupsData = async (req, res) => {
 
 
 export const getGroupData = async (req, res) => {
-  // 獲取路由中的 groupId 參數
-  const groupId = req.params.groupId;  
+  // 會員驗證
+  const token = req.headers.authorization?.split(' ')[1];
+  let userId;
   try {
+    const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
+    userId = payload.id;
+  } catch (error) {
+    console.error('JWT 驗證失敗:', error);
+    return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
+  }  
+  try {
+    // 獲取路由中的 groupId 參數
+    const groupId = req.params.groupId;
     const results = await getMemberByGroupId(groupId);
     if (results.length === 0) {
       return res.status(404).json({ error: true, message: 'Group not found' });
