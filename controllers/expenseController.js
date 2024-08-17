@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { uploadFileToS3 } from '../services/S3.js';
-import { createExpense } from '../models/expenseModel.js';
+import { createExpense, getExpense } from '../models/expenseModel.js';
 import { addPayer } from '../models/payerModel.js';
 import { addSplitMember } from '../models/splitMemberModel.js';
 import jwt from 'jsonwebtoken';
@@ -71,7 +71,6 @@ export const uploadExpenseData = async (req, res) => {
     const expenseId = await createExpense(plainBody.groupId, plainBody.date, plainBody.time, plainBody.category, plainBody.item, plainBody.currency, plainBody.amount, plainBody.exchangeRate, plainBody.mainCurrencyAmount, plainBody.note, imageName);
     // 資料存入代墊資料庫
     await addPayer(expenseId, plainBody.payer, plainBody.amount, plainBody.mainCurrencyAmount);
-    console.log()
     // 資料存入欠款資料庫
     const splitMembers = plainBody.splitMembers;
     const number = plainBody.splitMembers.length;
@@ -86,3 +85,89 @@ export const uploadExpenseData = async (req, res) => {
     return res.status(500).json({ error: 'Failed to save expense data' });
   }
 }
+
+
+export const getExpenseData = async (req, res) => {
+  // 會員驗證
+  const token = req.headers.authorization?.split(' ')[1];
+  console.log(token);
+  try {
+    // 獲取路由中的 groupId 參數
+    const groupId = req.params.groupId;
+    let results = await getExpense(groupId);
+  
+    // 確保 result.date 是字符串
+    results.forEach(result => {
+      const dateObj = new Date(result.date); 
+      const dateOnly = dateObj.toISOString().split('T')[0]; // 提取 YYYY-MM-DD 部分
+      result.date = dateOnly;
+
+      // 檢查並處理 amount 和 paid_amount
+      result.amount = removeTrailingZeros(result.amount);
+      result.paid_amount = removeTrailingZeros(result.paid_amount);
+
+      // 處理每個成員的金額
+      if (result.member_amount) {
+        result.member_amount = removeTrailingZeros(result.member_amount);
+      }
+    });
+  
+    // 按日期和 expense_id 進行分組
+    const groupedByDate = results.reduce((acc, curr) => {
+      if (!acc[curr.date]) {
+        acc[curr.date] = {};
+      }
+      if (!acc[curr.date][curr.expense_id]) {
+        acc[curr.date][curr.expense_id] = {
+          expense_id: curr.expense_id,
+          date: curr.date,
+          time: curr.time,
+          category: curr.category,
+          item: curr.item,
+          currency: curr.currency,
+          amount: curr.amount,
+          payer: curr.payer,
+          paid_amount: curr.paid_amount,
+          members: []
+        };
+      }
+      acc[curr.date][curr.expense_id].members.push({
+        member: curr.member,
+        member_amount: curr.member_amount
+      });
+      return acc;
+    }, {});
+  
+    // 將分組後的數據排序
+    const sortedGroupedByDate = Object.keys(groupedByDate)
+      .sort((a, b) => new Date(b) - new Date(a)) // 先按日期降序排列
+      .map(date => {
+        return {
+          date,
+          expenses: Object.values(groupedByDate[date]).sort((a, b) => b.expense_id - a.expense_id) // 按 expense_id 降序排列
+        };
+      });
+  
+    // 返回排序後的數據
+    res.status(200).json({ expenseData: sortedGroupedByDate });
+    console.log(JSON.stringify(sortedGroupedByDate, null, 2));
+  } catch (error) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+};
+
+
+function removeTrailingZeros(value) {
+  if (typeof value === 'string') {
+    value = parseFloat(value);  // 將字符串轉換為數字
+  }
+  if (typeof value === 'number') {
+    const formattedValue = parseFloat(value.toFixed(4)).toLocaleString('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 4
+    });
+    return formattedValue;
+  }
+  return value;
+}
+
