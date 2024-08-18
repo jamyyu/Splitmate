@@ -36,6 +36,7 @@ function toggleExpenseAndTransferForms() {
   const splitLabel = document.querySelector('label[for="split"]');
   const payerButton = document.querySelector('#payer ~ .add-button');
   const splitButton = document.querySelector('#split ~ .add-button');
+  const submitBtn = document.querySelector('.submit-button');
 
   transferTab.addEventListener('click', () => {
     expenseTab.classList.remove('active');
@@ -49,6 +50,8 @@ function toggleExpenseAndTransferForms() {
     // 隱藏按鈕
     payerButton.style.display = 'none';
     splitButton.style.display = 'none';
+    // 暫時禁止提交
+    submitBtn.disabled = true;
   });
 
   expenseTab.addEventListener('click', () => {
