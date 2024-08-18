@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { uploadFileToS3 } from '../services/S3.js';
-import { createExpense, getExpense } from '../models/expenseModel.js';
+import { createExpense, getExpense, getGroupBalance} from '../models/expenseModel.js';
 import { addPayer } from '../models/payerModel.js';
 import { addSplitMember } from '../models/splitMemberModel.js';
 import jwt from 'jsonwebtoken';
@@ -92,6 +92,11 @@ export const getExpenseData = async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
   console.log(token);
   try {
+    const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
+  } catch (error) {
+    return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
+  }
+  try {
     // 獲取路由中的 groupId 參數
     const groupId = req.params.groupId;
     let results = await getExpense(groupId);
@@ -171,3 +176,22 @@ function removeTrailingZeros(value) {
   return value;
 }
 
+
+export const getGroupBalanceData = async (req, res) => {
+  // 會員驗證
+  const token = req.headers.authorization?.split(' ')[1];
+  console.log(token);
+  try {
+    const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
+  } catch (error) {
+    return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
+  }
+  try{
+    const groupId = req.params.groupId;
+    let groupBalanceData = await getGroupBalance(groupId);
+    res.status(200).json({ groupBalanceData: groupBalanceData });
+    console.log(JSON.stringify(groupBalanceData, null, 2));
+  } catch (error) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+}
