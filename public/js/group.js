@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   fetchGroup();
   clickAddButton();
-  fetchExpense()
+  fetchExpense();
+  clickSettlementBtn();
 });
 
 
@@ -190,4 +191,14 @@ function renderExpense(expenseData, token) {
       activityDetailsContainer.appendChild(activityItemDiv);
     });
   });
+}
+
+
+function clickSettlementBtn(){
+  const settlementBtn = document.querySelector('.settlement-btn');
+  settlementBtn.addEventListener('click',() => {
+    const pathname = window.location.pathname;
+    const groupId = pathname.split('/')[2];
+    window.location.href = `/group/${groupId}/balance`;
+  })
 }
