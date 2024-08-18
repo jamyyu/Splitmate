@@ -37,7 +37,7 @@ export class Database {
         connection = await pool.getConnection();
         const [results] = await connection.execute(query, params);
 
-        if (query.trim().toLowerCase().startsWith("select")) {
+        if (query.trim().toLowerCase().startsWith("select") || query.trim().toLowerCase().startsWith("with")) {
           return results;
         } else {
           return {
