@@ -49,6 +49,10 @@ app.get('/group/:groupId/create-record', (req, res) => {
 app.get('/record/:expenseId', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/record.html'));
 });
+//結餘頁面
+app.get('/group/:groupId/balance', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/balance.html'));
+});
 //分攤成員及比例設定頁面
 app.get('/group/:groupId/create-record/pay', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/pay.html'));
