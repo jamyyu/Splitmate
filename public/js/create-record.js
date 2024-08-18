@@ -66,6 +66,8 @@ function toggleExpenseAndTransferForms() {
     // 顯示按鈕
     payerButton.style.display = 'block';
     splitButton.style.display = 'block';
+    // 暫時禁止提交
+    submitBtn.disabled = false;
   });
 }
 
