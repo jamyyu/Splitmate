@@ -29,8 +29,8 @@
   <main class="main-content">
     <div class="form-container">
       <div class="tabs">
-        <button class="tab active">花費</button>
-        <button class="tab">轉帳</button>
+        <button class="tab expense-tab">花費</button>
+        <button class="tab transfer-tab">轉帳</button>
       </div>
       <form id="expense-form">
         <div class="form-group-inline-time">
@@ -79,7 +79,7 @@
           <label for="payer">誰付錢</label>
           <div class="select-container">
             <div class="selectBtn" id="payer"></div>
-            <button type="button" class="add-button">➔</button>
+            <!--<button type="button" class="add-button">➔</button>-->
             <div class="optionGroup" id="payer-options">
               <!-- 動態生成的選項添加到這裡 -->
             </div>
@@ -89,8 +89,13 @@
           <label for="split">分給誰</label>
           <div class="select-container">
             <div class="selectBtn" id="split"></div>
-            <button type="button" class="add-button">➔</button>
+            <!--<button type="button" class="add-button">➔</button>-->
             <div class="optionGroup" id="split-options">
+              <!-- 動態生成的選項添加到這裡 -->
+            </div>
+            <div class="selectBtn" id="transfer"></div>
+            <!--<button type="button" class="add-button">➔</button>-->
+            <div class="optionGroup" id="transfer-options">
               <!-- 動態生成的選項添加到這裡 -->
             </div>
           </div>
