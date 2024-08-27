@@ -5,7 +5,7 @@ import { updateGroupMemberMappingUserId } from '../models/groupMemberModel.js';
 import dotenv from 'dotenv';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
-import { uploadFileToS3 } from '../services/S3.js';
+import { uploadFileToS3, deleteFilefromS3 } from '../services/S3.js';
 
 dotenv.config();
 
@@ -106,26 +106,23 @@ export const patchUserProfile = async (req, res) => {
     return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
   }
   try {
-    // 圖片上傳至S3
-    let imageName = null;
+    // 將 req.body 轉換為普通對象
+    const plainBody = convertToPlainObject(req.body);
+    // 圖片更新
+    let newImageName = originImageName;
     if (req.file) {
+      if (originImageName) {
+        await deleteFilefromS3(originImageName); 
+      }
       const data = await uploadFileToS3(req.file);
-      imageName = data.key;
+      newImageName = data.key;
       if (data.$metadata.httpStatusCode !== 200) {
         return res.status(500).json({ 'message': 'Image upload failed', 'details': data });
       }
     }
-    // 將 req.body 轉換為普通對象
-    const plainBody = convertToPlainObject(req.body);
-    console.log(plainBody);
-    console.log(imageName);
-    // 如果沒有上傳新照片，保留用戶原本的的 image_name
-    if (!imageName) {
-        imageName = originImageName || null;
-    }
     // 資料存入 user 資料庫
     let userName = plainBody.userName;
-    await updateUserData(userName, imageName, email);
+    await updateUserData(userName, newImageName, email);
     // 生成新的 token
     const results = await getUserByEmail(email);
     const now = new Date();
