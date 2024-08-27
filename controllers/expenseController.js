@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { uploadFileToS3 } from '../services/S3.js';
-import { createExpense, getExpense, getGroupBalance} from '../models/expenseModel.js';
+import { createExpense, getAllRecord, getGroupBalance, getExpense, deleteExpense} from '../models/expenseModel.js';
 import { addPayer } from '../models/payerModel.js';
 import { addSplitMember } from '../models/splitMemberModel.js';
 import jwt from 'jsonwebtoken';
@@ -47,7 +47,6 @@ const secretKey = process.env.JWT_SECRET_KEY;
 export const uploadExpenseData = async (req, res) => {
   // 會員驗證
   const token = req.headers.authorization?.split(' ')[1];
-  console.log(token);
   try {
     const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
   } catch (error) {
@@ -65,19 +64,19 @@ export const uploadExpenseData = async (req, res) => {
     }
     // 將 req.body 轉換為普通物件
     const plainBody = convertToPlainObject(req.body);
-    console.log(plainBody);
-    console.log(imageName);
+    // 解析 payer 和 splitMembers JSON 字串
+    const payer = JSON.parse(plainBody.payer);
+    const splitMembers = plainBody.splitMembers.map(member => JSON.parse(member));
     // 資料存入費用資料庫
     const expenseId = await createExpense(plainBody.groupId, plainBody.date, plainBody.time, plainBody.category, plainBody.item, plainBody.currency, plainBody.amount, plainBody.exchangeRate, plainBody.mainCurrencyAmount, plainBody.note, imageName);
     // 資料存入代墊資料庫
-    await addPayer(expenseId, plainBody.payer, plainBody.amount, plainBody.mainCurrencyAmount);
+    await addPayer(expenseId, payer.payerMemberId, plainBody.amount, plainBody.mainCurrencyAmount);
     // 資料存入欠款資料庫
-    const splitMembers = plainBody.splitMembers;
     const number = plainBody.splitMembers.length;
     let amount = plainBody.amount / number;
     let mainCurrencyAmount = plainBody.mainCurrencyAmount / number;
     for (let splitMember of splitMembers) {
-      await addSplitMember(expenseId, splitMember, amount, mainCurrencyAmount);
+      await addSplitMember(expenseId, splitMember.splitMembersMemberId, amount, mainCurrencyAmount);
     }
     res.status(200).json({ ok: true });
   } catch (error) {
@@ -87,10 +86,9 @@ export const uploadExpenseData = async (req, res) => {
 }
 
 
-export const getExpenseData = async (req, res) => {
+export const getAllRecordData = async (req, res) => {
   // 會員驗證
   const token = req.headers.authorization?.split(' ')[1];
-  console.log(token);
   try {
     const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
   } catch (error) {
@@ -99,47 +97,58 @@ export const getExpenseData = async (req, res) => {
   try {
     // 獲取路由中的 groupId 參數
     const groupId = req.params.groupId;
-    let results = await getExpense(groupId);
+    let results = await getAllRecord(groupId);
+    console.log(results)
   
-    // 確保 result.date 是字符串
+    // 確保 result.date 是字串
     results.forEach(result => {
       const dateObj = new Date(result.date); 
       const dateOnly = dateObj.toISOString().split('T')[0]; // 提取 YYYY-MM-DD 部分
       result.date = dateOnly;
-
-      // 檢查並處理 amount 和 paid_amount
-      result.amount = removeTrailingZeros(result.amount);
-      result.paid_amount = removeTrailingZeros(result.paid_amount);
-
-      // 處理每個成員的金額
-      if (result.member_amount) {
-        result.member_amount = removeTrailingZeros(result.member_amount);
-      }
     });
   
-    // 按日期和 expense_id 進行分組
+    // 按日期進行分組
     const groupedByDate = results.reduce((acc, curr) => {
       if (!acc[curr.date]) {
-        acc[curr.date] = {};
+        acc[curr.date] = [];
       }
-      if (!acc[curr.date][curr.expense_id]) {
-        acc[curr.date][curr.expense_id] = {
-          expense_id: curr.expense_id,
+
+      // 檢查是否已經存在該 record_id
+      let existingRecord = acc[curr.date].find(record => record.record_id === curr.record_id);
+
+      if (!existingRecord) {
+        // 如果不存在該 record_id，則新增一個紀錄物件
+        existingRecord = {
+          record_type: curr.record_type,
+          record_id: curr.record_id,
           date: curr.date,
           time: curr.time,
           category: curr.category,
           item: curr.item,
           currency: curr.currency,
-          amount: curr.amount,
-          payer: curr.payer,
-          paid_amount: curr.paid_amount,
+          amount: removeTrailingZeros(curr.amount),
+          exchange_rate: curr.exchangeRate,
+          main_currency_amount: removeTrailingZeros(curr.mainCurrencyAmount),
+          note: curr.note,
+          image_name: curr.image_name,
+          updated_time: curr.updated_at,
+          payer_member_id: curr.payer_member_id,
+          payer: curr.payer_name,
+          paid_amount: removeTrailingZeros(curr.paid_amount),
+          paid_main_currency_amount: removeTrailingZeros(curr.paid_main_currency_amount),
           members: []
         };
+        acc[curr.date].push(existingRecord);
       }
-      acc[curr.date][curr.expense_id].members.push({
-        member: curr.member,
-        member_amount: curr.member_amount
+
+      // 將 member 資料添加到現有的紀錄中
+      existingRecord.members.push({
+        member_id: curr.member_id,
+        member: curr.member_name,
+        member_amount: removeTrailingZeros(curr.member_amount),
+        member_main_currency_amount: removeTrailingZeros(curr.member_main_currency_amount)
       });
+    
       return acc;
     }, {});
   
@@ -149,12 +158,15 @@ export const getExpenseData = async (req, res) => {
       .map(date => {
         return {
           date,
-          expenses: Object.values(groupedByDate[date]).sort((a, b) => b.expense_id - a.expense_id) // 按 expense_id 降序排列
+          records: groupedByDate[date].sort((a, b) => {
+            const timeA = new Date(`${a.date}T${a.time}`);
+            const timeB = new Date(`${b.date}T${b.time}`);
+            return timeB - timeA; // 按時間降序排列
+          })
         };
       });
-  
     // 返回排序後的數據
-    res.status(200).json({ expenseData: sortedGroupedByDate });
+    res.status(200).json({ recordData: sortedGroupedByDate });
     console.log(JSON.stringify(sortedGroupedByDate, null, 2));
   } catch (error) {
     return res.status(400).json({ error: true, message: error.message });
@@ -177,10 +189,91 @@ function removeTrailingZeros(value) {
 }
 
 
+export const getExpenseData = async (req, res) => {
+  // 會員驗證
+  const token = req.headers.authorization?.split(' ')[1];
+  try {
+    const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
+  } catch (error) {
+    return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
+  }
+  try {
+    // 獲取路由中的 groupId 參數
+    const groupId = req.params.groupId;
+    const expenseId = req.params.expenseId;
+    let results = await getExpense(groupId, expenseId);
+
+    // 使用 reduce 來整理數據
+    const expenseData = results.reduce((acc, result) => {
+      // 查找是否已存在相同 expense_id 的支出
+      let expense = acc.find(exp => exp.expense_id === result.expense_id);
+
+      if (!expense) {
+        // 如果還沒有這筆支出，創建新的一筆支出
+        expense = {
+          expense_id: result.expense_id,
+          date: new Date(result.date).toISOString().split('T')[0], // 格式化日期
+          time: result.time,
+          category: result.category,
+          item: result.item,
+          currency: result.currency,
+          amount: removeTrailingZeros(result.amount),
+          exchangeRate: result.exchangeRate,
+          mainCurrencyAmount: removeTrailingZeros(result.mainCurrencyAmount),
+          note: result.note,
+          image_name: result.image_name,
+          updated_at: result.updated_at,
+          payer_name: result.payer_name,
+          payer_image_name: result.payer_image_name,
+          payer_member_id: result.payer_member_id,
+          paid_amount: removeTrailingZeros(result.paid_amount),
+          paid_main_currency_amount: removeTrailingZeros(result.paid_main_currency_amount),
+          members: [] // 初始化成員數組
+        };
+
+        // 將新支出推入累積數組
+        acc.push(expense);
+      }
+
+      // 將當前成員的數據添加到支出的 members 中
+      expense.members.push({
+        member_name: result.member_name,
+        member_image_name: result.member_image_name,
+        member_id: result.member_id,
+        member_amount: removeTrailingZeros(result.member_amount),
+        member_main_currency_amount: removeTrailingZeros(result.member_main_currency_amount)
+      });
+
+      return acc;
+    }, []); // 初始值為空數組
+    res.status(200).json({ expenseData: expenseData });
+  } catch (error) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+}
+
+
+export const deleteExpenseData = async (req, res) => {
+  // 會員驗證
+  const token = req.headers.authorization?.split(' ')[1];
+  try {
+    const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
+  } catch (error) {
+    return res.status(403).json({ error: true, message: 'Not logged in, access denied' });
+  }
+  try{
+    const expenseId = req.params.expenseId;
+    await deleteExpense(expenseId);
+    res.status(200).json({ ok: true });
+  } catch (error) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+}
+
+
 export const getGroupBalanceData = async (req, res) => {
   // 會員驗證
   const token = req.headers.authorization?.split(' ')[1];
-  console.log(token);
   try {
     const payload = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
   } catch (error) {
