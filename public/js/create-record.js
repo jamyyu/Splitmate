@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   setCurrentDateTime();
-  toggleExpenseAndTransferForms();
   setupCategoryDropdown();
   setupCurrencyDropdown();
   getMember();
   const options = getMember(); 
   initializeCustomSelect('payer', 'payer-options', false, options); // 單選
   initializeCustomSelect('split', 'split-options', true, options);  // 多選
+  initializeCustomSelect('transfer', 'transfer-options', false, options); // 單選
+  toggleExpenseAndTransferForms(options);
   clickCancelBtn();
   clickSubmitBtn();
 });
@@ -29,32 +30,45 @@ function setCurrentDateTime() {
 
 
 function toggleExpenseAndTransferForms() {
-  const expenseTab = document.querySelector('.tab.active');
-  const transferTab = document.querySelector('.tab:not(.active)');
+  const expenseTab = document.querySelector('.tab.expense-tab');
+  const transferTab = document.querySelector('.tab.transfer-tab');
   const itemField = document.querySelector('#item').closest('.form-group');
   const payerLabel = document.querySelector('label[for="payer"]');
   const splitLabel = document.querySelector('label[for="split"]');
-  const payerButton = document.querySelector('#payer ~ .add-button');
-  const splitButton = document.querySelector('#split ~ .add-button');
-  const submitBtn = document.querySelector('.submit-button');
+  const splitContainer = document.getElementById('split');
+  const transferContainer = document.getElementById('transfer');
+  const itemInput = document.getElementById('item');
+  //const payerButton = document.querySelector('#payer ~ .add-button');
+  //const splitButton = document.querySelector('#split ~ .add-button');
+  let currentForm = 'expense'; // 默認設置為 'expense' 表單
+
+  // 預設狀態: 將 expenseTab 設置為 active
+  expenseTab.classList.add('active');
+  transferTab.classList.remove('active');
+  itemField.style.display = 'flex';
+  payerLabel.textContent = '誰付錢';
+  splitLabel.textContent = '分給誰';
+  splitContainer.style.display = 'block';
+  transferContainer.style.display = 'none';
+  itemInput.setAttribute('required', true);
 
   transferTab.addEventListener('click', () => {
+    currentForm = 'transfer'; // 切換到 'transfer' 表單
     expenseTab.classList.remove('active');
     transferTab.classList.add('active');
+    itemInput.removeAttribute('required');
     // 隱藏品項
     itemField.style.display = 'none';
     // 修改誰付錢為轉帳從
     payerLabel.textContent = '轉帳從';
     // 修改分給誰為轉帳至
     splitLabel.textContent = '轉帳至';
-    // 隱藏按鈕
-    payerButton.style.display = 'none';
-    splitButton.style.display = 'none';
-    // 暫時禁止提交
-    submitBtn.disabled = true;
+    splitContainer.style.display = 'none';
+    transferContainer.style.display = 'block';
   });
 
   expenseTab.addEventListener('click', () => {
+    currentForm = 'expense'; // 切換到 'expense' 表單
     expenseTab.classList.add('active');
     transferTab.classList.remove('active');
     // 顯示品項
@@ -63,11 +77,9 @@ function toggleExpenseAndTransferForms() {
     payerLabel.textContent = '誰付錢';
     // 恢復分給誰
     splitLabel.textContent = '分給誰';
-    // 顯示按鈕
-    payerButton.style.display = 'block';
-    splitButton.style.display = 'block';
-    // 暫時禁止提交
-    submitBtn.disabled = false;
+    splitContainer.style.display = 'block';
+    transferContainer.style.display = 'none';
+    itemInput.setAttribute('required', true);
   });
 }
 
@@ -349,18 +361,30 @@ function clickCancelBtn() {
 
 
 function clickSubmitBtn() {
+  const memberData = JSON.parse(sessionStorage.getItem('memberData'));
   const expenseForm = document.getElementById('expense-form');
   const submitBtn = document.querySelector('.submit-button');
   const token = localStorage.getItem('token');
   const userData = parseJwt(token);
   const currentUserName = userData.name;
+  let currentForm = 'expense'; // 用於區分表單的標記
+
+  // 監聽表單切換，更新 currentForm 值
+  const expenseTab = document.querySelector('.tab.expense-tab');
+  const transferTab = document.querySelector('.tab.transfer-tab');
+  
+  expenseTab.addEventListener('click', () => {
+    currentForm = 'expense';
+  });
+
+  transferTab.addEventListener('click', () => {
+    currentForm = 'transfer';
+  });
 
   expenseForm.addEventListener('submit', async (e) => {
     e.preventDefault(); // 防止表單的預設提交行為
-
     // 禁用提交按鈕，防止重複提交
     submitBtn.disabled = true;
-
     // 獲取數據
     const groupData = JSON.parse(sessionStorage.getItem('groupData'));
     const groupId = groupData.id;
@@ -377,51 +401,113 @@ function clickSubmitBtn() {
     if (payer === '你') {
       payer = currentUserName;
     }
+    // 新增：找出 payer 的 member_id 和 user_id
+    const payerInfo = memberData.find(member => member.user_name === payer || member.member_name === payer);
+    const payerMemberId = payerInfo ? payerInfo.member_id : null;
+    const payerUserId = payerInfo ? payerInfo.user_id : null;
+
+    // 將 payer 資料放入陣列並格式化
+    const payerArray = [
+      JSON.stringify({
+        payerMemberId: payerMemberId,
+        payerUserId: payerUserId
+      })
+    ];
+
     let splitMembers = Array.from(document.getElementById('split').textContent.trim().split(','))
     .map(member => member.trim())
     .filter(member => member !== '')
     .map(member => member === '你' ? currentUserName : member);
+
+    // 新增：根據 splitMembers 找出各成員的 member_id 和 user_id
+    const splitMembersInfo = splitMembers.map(memberName => {
+      const memberInfo = memberData.find(member => member.user_name === memberName || member.member_name === memberName);
+      return {
+        splitMembersMemberId: memberInfo ? memberInfo.member_id : null,
+        splitMembersUserId: memberInfo ? memberInfo.user_id : null,
+      };
+    });
+
+    let transfer = document.getElementById('transfer').textContent.trim();
+    if (transfer === '你') {
+      transfer = currentUserName;
+    } 
+    // 新增：找出 transfer 的 member_id 和 user_id
+    const transferInfo = memberData.find(member => member.user_name === transfer || member.member_name === transfer);
+    const transferMemberId = transferInfo ? transferInfo.member_id : null;
+    const transferUserId = transferInfo ? transferInfo.user_id : null;
+
+    const transferArray = [
+      JSON.stringify({
+        transferToMemberId: transferMemberId,
+        transferToUserId: transferUserId
+      })
+    ];
+
     const note = document.getElementById('note').value.trim() || null;
     const image = document.getElementById('image').files.length > 0 ? document.getElementById('image').files[0] : null; // 檢查是否有圖片
+
     // 檢查必填字段
     if (!payer) {
-      alert('請選擇一個付款人');
+      if (currentForm === 'expense') {
+        alert('請選擇１個付款人');
+      } else if (currentForm === 'transfer') {
+        alert('請選擇１個轉帳者');
+      }
       submitBtn.disabled = false;
       return; // 阻止提交
     }
-    if (splitMembers.length === 0 || (splitMembers.length === 1 && splitMembers[0] === '')) {
-      alert('請選擇至少一個分帳成員');
-      submitBtn.disabled = false;
-      return; // 阻止提交
+    if (currentForm === 'expense') {
+      if (splitMembers.length === 0 || (splitMembers.length === 1 && splitMembers[0] === '')) {
+        alert('請選擇至少１個分帳成員');
+        submitBtn.disabled = false;
+        return; // 阻止提交
+      }
     }
-    // 構建表單數據物件
+    if (currentForm === 'transfer') {
+      if (!transfer) {
+        alert('請選擇１人轉帳');
+        submitBtn.disabled = false;
+        return; // 阻止提交
+      }
+    }
+
+    // 構建表單數據物件，根據不同表單處理
     const formData = new FormData();
     formData.append('groupId', groupId);
     formData.append('date', date);
     formData.append('time', time);
-    formData.append('category', category);
-    formData.append('item', item);
     formData.append('currency', currency);
     formData.append('amount', amount);
     formData.append('exchangeRate', exchangeRate);
     formData.append('mainCurrencyAmount', mainCurrencyAmount);
-    formData.append('payer', payer);
-    splitMembers.forEach(member => formData.append('splitMembers[]', member)); // 添加分給誰
     formData.append('note', note);
     formData.append('image', image); // 添加圖片文件
 
+    if (currentForm === 'expense') {
+      // Expense 表單的特殊項目
+      formData.append('payer', payerArray);
+      formData.append('category', category);
+      formData.append('item', item);
+      splitMembersInfo.forEach(member => {
+        formData.append('splitMembers[]', JSON.stringify(member));
+      });
+    } else if (currentForm === 'transfer') {
+      // Transfer 表單的特殊項目
+      formData.append('transferFrom', payerArray);
+      formData.append('transferTo', transferArray);
+    }
+
     try {
-      // 發送 POST 請求到後端 API
-      const response = await fetch('/api/expense', {
+      // 發送 POST 請求到後端 API，根據不同表單提交到不同的路徑
+      const response = await fetch(currentForm === 'expense' ? '/api/expense' : '/api/transfer', {
         method: 'POST',
         body: formData,
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-
       const result = await response.json();
-
       if (response.ok) {
         // 成功處理後的操作
         alert('紀錄已成功新增');
