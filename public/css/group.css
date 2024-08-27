@@ -39,6 +39,18 @@
   cursor: pointer;
 }
 
+.check-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #52bc8b;
+  color: white;
+  cursor: pointer;
+}
+
 .settlement-btn {
   position: absolute;
   bottom: 10px;
@@ -51,7 +63,7 @@
   cursor: pointer;
 }
 
-.edit-btn:hover, .settlement-btn:hover {
+.edit-btn:hover, .settlement-btn:hover, .check-btn:hover {
   background-color: #1AA34A;
 }
 
@@ -81,11 +93,17 @@
 
 .activity-cost {
   margin-left: auto;
-  color: #e74c3c; /* 花費顏色 */
+  color: #e74c3c; 
+}
+
+.transfer-income {
+  margin-left: auto;
+  color: #52bc8b; 
 }
 
 .activity-payment {
   color: #888;
+  font-size: small;
 }
 
 .add-button-container {
@@ -118,4 +136,15 @@
 
 .add-button:focus {
   outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+a:hover {
+  font-weight: bold;
+  font-size: 1.1em; /* 字體變大一點 */
 }
