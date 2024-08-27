@@ -15,11 +15,3 @@ export const getMemberByEmail = async (email) => {
   console.log('getMemberByEmail',results);
   return results.length ? results[0] : null; 
 };
-
-
-export const getMemberById = async (id) => {
-  const query = 'SELECT name FROM member WHERE id = ?';
-  const results = await Database.executeQuery(query, [email]);
-  console.log('getMemberByEmail',results);
-  return results.length ? results[0] : null; 
-};
