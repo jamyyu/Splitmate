@@ -37,6 +37,15 @@ function fetchGroup(){
     sessionStorage.setItem('groupData', JSON.stringify(groupData));
     sessionStorage.setItem('memberData', JSON.stringify(memberData));
     renderGroup(groupData);
+    toggleButtonsBasedOnRole();
+    const editBtn = document.querySelector('.edit-btn');
+    const checkBtn = document.querySelector('.check-btn');
+    if (editBtn){
+      clickEditBtn();
+    }
+    if(checkBtn){
+      clickCheckBtn();
+    }
   })
   .catch(error => {
     console.error("Error fetching data:", error);
@@ -46,7 +55,11 @@ function fetchGroup(){
 
 function renderGroup(groupData){
   const groupImage = document.getElementById('group-image');
-  groupImage.src = 'https://d3q4cpn0fxi6na.cloudfront.net/' + groupData.image_name;
+  if (groupData.image_name === null ){
+    groupImage.src = '/images/template.jpg';
+  } else {
+    groupImage.src = 'https://d3q4cpn0fxi6na.cloudfront.net/' + groupData.image_name;
+  }
   const pageTitle = document.querySelector('.page-title');
   pageTitle.textContent = groupData.name;
 };
@@ -75,8 +88,9 @@ function fetchExpense(){
     })
     .then(response => response.json())
     .then(result => {
-      const expenseData = result.expenseData;
-      renderExpense(expenseData, token);
+      console.log(result)
+      const recordData = result.recordData;
+      renderRecord(recordData, token);
     })
     .catch(error => {
       console.error("Error fetching data:", error);
@@ -84,7 +98,7 @@ function fetchExpense(){
   }
 
 
-function renderExpense(expenseData, token) {
+function renderRecord(recordData, token) {
   // 定義貨幣符號字典
   const currency_symbols = {
     'TWD': 'NT$', 'USD': '$', 'GBP': '£', 'EUR': '€', 'JPY': '¥',
@@ -129,7 +143,7 @@ function renderExpense(expenseData, token) {
   const activityDetailsContainer = document.querySelector('.activity-details');
 
   // 遍歷每個日期組
-  expenseData.forEach(group => {
+  recordData.forEach(group => {
     // 創建一個包含日期的 <h2> 元素
     const dateHeading = document.createElement('h2');
     dateHeading.textContent = new Date(group.date).toLocaleDateString('zh-TW', {
@@ -141,54 +155,109 @@ function renderExpense(expenseData, token) {
     // 將日期添加到 .activity-details 容器
     activityDetailsContainer.appendChild(dateHeading);
 
-    // 遍歷每個日期下的expenses
-    group.expenses.forEach(expense => {
-      // 查找當前用戶在members中的分攤金額
-      const userMember = expense.members.find(member => member.member === userData.name);
-      const userMemberAmount = userMember ? userMember.member_amount : '';
+    // 遍歷每個日期下的records
+    group.records.forEach(record => {
+      if(record.record_type === 'expense'){
+        // 查找當前用戶在members中的分攤金額
+        const userMember = record.members.find(member => member.member === userData.name);
+        const userMemberAmount = userMember ? userMember.member_amount : '';
 
-      // 創建 .activity-item 容器
-      const activityItemDiv = document.createElement('div');
-      activityItemDiv.classList.add('activity-item');
+        // 創建<a>標籤
+        const link = document.createElement("a");
+        link.setAttribute("href", `/expense/${record.record_id}`);
 
-      // 創建 .activity-description 容器
-      const activityDescriptionDiv = document.createElement('div');
-      activityDescriptionDiv.classList.add('activity-description');
+        // 創建 .activity-item 容器
+        const activityItemDiv = document.createElement('div');
+        activityItemDiv.classList.add('activity-item');
 
-      const activityIconSpan = document.createElement('span');
-      activityIconSpan.classList.add('activity-icon');
-      activityIconSpan.textContent = expense.category; // 替換成實際的類別圖標
+        // 創建 .activity-description 容器
+        const activityDescriptionDiv = document.createElement('div');
+        activityDescriptionDiv.classList.add('activity-description');
 
-      const itemText = document.createTextNode(` ${expense.item}`);
+        const activityIconSpan = document.createElement('span');
+        activityIconSpan.classList.add('activity-icon');
+        activityIconSpan.textContent = record.category; // 替換成實際的類別圖標
 
-      const activityCostSpan = document.createElement('span');
-      activityCostSpan.classList.add('activity-cost');
-      if (userMemberAmount) {
-        // 查找對應的貨幣符號，沒有則使用原始貨幣代碼
-        const currencySymbol = currency_symbols[expense.currency] || expense.currency;
-        activityCostSpan.textContent = `${currencySymbol}${userMemberAmount}`;
-      } // 如果userMemberAmount是空的，則不顯示currency和amount
+        const itemText = document.createTextNode(` ${record.item}`);
 
-      // 將所有子元素添加到 .activity-description 容器
-      activityDescriptionDiv.appendChild(activityIconSpan);
-      activityDescriptionDiv.appendChild(itemText);
-      activityDescriptionDiv.appendChild(activityCostSpan);
+        const activityCostSpan = document.createElement('span');
+        activityCostSpan.classList.add('activity-cost');
+        if (userMemberAmount) {
+          // 查找對應的貨幣符號，沒有則使用原始貨幣代碼
+          const currencySymbol = currency_symbols[record.currency] || record.currency;
+          activityCostSpan.textContent = `${currencySymbol}${userMemberAmount}`;
+        } // 如果userMemberAmount是空的，則不顯示currency和amount
 
-      // 創建 .activity-payment 容器
-      const activityPaymentDiv = document.createElement('div');
-      activityPaymentDiv.classList.add('activity-payment');
-      
-      // 檢查payer，如果是userData.name，顯示'你'
-      const payerText = expense.payer === userData.name ? '你' : expense.payer;
-      const currencySymbol = currency_symbols[expense.currency] || expense.currency;
-      activityPaymentDiv.textContent = `${payerText} 先付 ${currencySymbol}${expense.paid_amount}`;
+        // 將所有子元素添加到 .activity-description 容器
+        activityDescriptionDiv.appendChild(activityIconSpan);
+        activityDescriptionDiv.appendChild(itemText);
+        activityDescriptionDiv.appendChild(activityCostSpan);
+        
 
-      // 將 .activity-description 和 .activity-payment 容器添加到 .activity-item 容器
-      activityItemDiv.appendChild(activityDescriptionDiv);
-      activityItemDiv.appendChild(activityPaymentDiv);
+        // 創建 .activity-payment 容器
+        const activityPaymentDiv = document.createElement('div');
+        activityPaymentDiv.classList.add('activity-payment');
+        
+        // 檢查payer，如果是userData.name，顯示'你'
+        const payerText = record.payer === userData.name ? '你' : record.payer;
+        const currencySymbol = currency_symbols[record.currency] || record.currency;
+        activityPaymentDiv.textContent = `${payerText} 先付 ${currencySymbol}${record.paid_amount}`;
 
-      // 將 .activity-item 容器添加到 .activity-details 容器
-      activityDetailsContainer.appendChild(activityItemDiv);
+        // 將 .activity-description 和 .activity-payment 容器添加到 .activity-item 容器
+        activityItemDiv.appendChild(activityDescriptionDiv);
+        activityItemDiv.appendChild(activityPaymentDiv);
+
+        // 將 .activity-item 容器添加到 <a>，再把 <a>加到 .activity-details 容器
+        link.appendChild(activityItemDiv);
+        activityDetailsContainer.appendChild(link);
+      } else {
+        // 創建<a>標籤
+        const link = document.createElement("a");
+        link.setAttribute("href", `/transfer/${record.record_id}`);
+
+        // 創建 .activity-item 容器
+        const activityItemDiv = document.createElement('div');
+        activityItemDiv.classList.add('activity-item');
+
+        // 創建 .activity-description 容器
+        const activityDescriptionDiv = document.createElement('div');
+        activityDescriptionDiv.classList.add('activity-description');
+
+
+        const activityIconSpan = document.createElement('span');
+        activityIconSpan.classList.add('activity-icon');
+        activityIconSpan.textContent = '💸'; // 替換成實際的類別圖標
+
+        const payerText = record.payer === userData.name ? '你' : record.payer;
+        const memberText = record.members[0].member === userData.name ? '你' : record.members[0].member;
+        const currencySymbol = currency_symbols[record.currency] || record.currency;
+        const itemTextElement = document.createElement('span');
+        itemTextElement.textContent = ` ${payerText} 轉帳給 ${memberText} ${currencySymbol}${record.amount}`;
+        itemTextElement.style.color = '#888'; // 指定顏色
+        itemTextElement.style.fontSize = 'small';
+
+        const activityCostSpan = document.createElement('span');
+        activityCostSpan.classList.add('transfer-income');
+        const userMember = record.members.find(member => member.member === userData.name);
+        const userMemberAmount = userMember ? record.amount : '';
+        if (userMemberAmount) {
+          // 查找對應的貨幣符號，沒有則使用原始貨幣代碼
+          const currencySymbol = currency_symbols[record.currency] || record.currency;
+          activityCostSpan.textContent = `${currencySymbol}${userMemberAmount}`;
+        } // 如果userMemberAmount是空的，則不顯示currency和amount
+
+        // 將所有子元素添加到 .activity-description 容器
+        activityDescriptionDiv.appendChild(activityIconSpan);
+        activityDescriptionDiv.appendChild(itemTextElement);
+        activityDescriptionDiv.appendChild(activityCostSpan);
+
+        // 將 .activity-description 添加到 .activity-item 容器
+        activityItemDiv.appendChild(activityDescriptionDiv);
+
+        // 將 .activity-item 容器添加到 <a>，再把 <a>加到 .activity-details 容器
+        link.appendChild(activityItemDiv);
+        activityDetailsContainer.appendChild(link);
+      }
     });
   });
 }
@@ -200,5 +269,64 @@ function clickSettlementBtn(){
     const pathname = window.location.pathname;
     const groupId = pathname.split('/')[2];
     window.location.href = `/group/${groupId}/balance`;
+  })
+}
+
+
+function toggleButtonsBasedOnRole() {
+  const memberData = JSON.parse(sessionStorage.getItem('memberData'));
+  const token = localStorage.getItem('token');
+  const userData = parseJwt(token);
+  const userName = userData.name;
+
+  // 找到當前用戶的數據
+  const currentUser = memberData.find(member => member.user_name === userName);
+
+  if (currentUser) {
+    const imageSection = document.querySelector('.image-section');
+    
+    // 找到“結餘”按鈕
+    const settlementBtn = imageSection.querySelector('.settlement-btn');
+
+    // 先移除現有的編輯和查看按鈕
+    imageSection.querySelectorAll('.edit-btn, .check-btn').forEach(btn => btn.remove());
+
+    let newBtn;
+    if (currentUser.role === 'admin') {
+      // 如果是 admin，創建 "編輯" 按鈕
+      newBtn = document.createElement('button');
+      newBtn.className = 'edit-btn';
+      newBtn.textContent = '編輯';
+    } else {
+      // 如果不是 admin，創建 "查看" 按鈕
+      newBtn = document.createElement('button');
+      newBtn.className = 'check-btn';
+      newBtn.textContent = '查看';
+    }
+
+    // 確保新按鈕插入到“結餘”按鈕前面
+    if (newBtn && settlementBtn) {
+      imageSection.insertBefore(newBtn, settlementBtn);
+    }
+  }
+}
+
+
+function clickEditBtn(){
+  const editBtn = document.querySelector('.edit-btn');
+  editBtn.addEventListener('click',() => {
+    const pathname = window.location.pathname;
+    const groupId = pathname.split('/')[2];
+    window.location.href = `/group/${groupId}/edit-group`;
+  })
+}
+
+
+function clickCheckBtn(){
+  const checkBtn = document.querySelector('.check-btn');
+  checkBtn.addEventListener('click',() => {
+    const pathname = window.location.pathname;
+    const groupId = pathname.split('/')[2];
+    window.location.href = `/group/${groupId}/view-group`;
   })
 }
