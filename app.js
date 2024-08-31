@@ -90,7 +90,12 @@ app.use(get404Page);
 const server = http.createServer(app);
 
 // 創建 Socket.IO 伺服器並綁定到 HTTP 伺服器上
-const io = new Server(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "https://splitmate.site",
+    methods: ["GET", "POST"]
+  }
+});
 
 // 使用 Socket.IO 控制器來設置 Socket.IO 事件
 setupSocketIO(io);
