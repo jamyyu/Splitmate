@@ -6,9 +6,13 @@
     <title>Splitmate</title>
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/group.css">
+    <link rel="stylesheet" href="/css/chat.css">    
     <script src="/js/header.js"></script>
     <script src="/js/group.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js" defer></script>
     <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <header class="header">
@@ -30,6 +34,9 @@
     <div class="activity">
       <div class="image-section">
         <img class="activity-image" id="group-image">
+        <button class="chat-btn" id="chat-toggle-btn">
+          <img src="/images/chat.png">
+        </button>
         <!-- 生成編輯或查看按鈕-->
         <button class="settlement-btn">結餘</button>
       </div>
@@ -53,5 +60,37 @@
       </div>
     </div>
   </main>
+  <!-- 新增聊天視窗 -->
+  <div id="chat-window" class="chat-window hidden">
+    <div class="chat-header">
+      <span>聊天室</span>
+      <button id="close-chat-btn" class="close-btn">&times;</button>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <!-- 左側訊息範例 
+      <div class="message message-left">
+        <div class="message-content">你好！這是一則訊息。</div>
+        <div class="message-info-left">
+          <span class="message-sender">其他用戶</span>
+          <span class="message-time">12:30 PM</span>
+        </div>
+      </div>
+      -->
+  
+      <!-- 右側訊息範例 
+      <div class="message message-right">
+        <div class="message-content">你好！這是我的回應。</div>
+        <div class="message-info-right">
+          <span class="message-sender">我</span>
+          <span class="message-time">12:31 PM</span>
+        </div>
+      </div>
+      -->
+    </div>
+    <div class="chat-input">
+      <input type="text" id="message-input" placeholder="輸入訊息..." autocomplete="off" />
+      <button id="send-button" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
 </body>
 </html>

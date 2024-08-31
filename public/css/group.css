@@ -27,6 +27,17 @@
   object-fit: cover;
 }
 
+.chat-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 8px 8px 6px 8px;
+  border: none;
+  border-radius: 50%;
+  background-color: #52bc8b;
+  cursor: pointer;
+}
+
 .edit-btn {
   position: absolute;
   bottom: 10px;
@@ -63,7 +74,7 @@
   cursor: pointer;
 }
 
-.edit-btn:hover, .settlement-btn:hover, .check-btn:hover {
+.edit-btn:hover, .settlement-btn:hover, .check-btn:hover, .chat-btn:hover {
   background-color: #1AA34A;
 }
 
@@ -73,7 +84,7 @@
 }
 
 .activity-details h2 {
-  margin: 0 0 20px 0;
+  margin: 0 0 15px 0;
   font-size: 20px;
   color: #333;
 }
@@ -89,6 +100,13 @@
 
 .activity-icon {
   margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.activity-icon img {
+  width: 20px;
+  height: 20px;
 }
 
 .activity-cost {
@@ -146,5 +164,69 @@ a {
 
 a:hover {
   font-weight: bold;
-  font-size: 1.1em; /* 字體變大一點 */
+  font-size: 1.1em;
+}
+
+a:hover img {
+  transform: scale(1.2); 
+}
+
+
+@media (max-width: 700px) {
+  .main-content {
+    width: 100%;
+    margin: 0;
+  }
+
+  .activity {
+    box-shadow: none;
+  }
+
+  .activity-details {
+    padding: 10px;
+  }
+
+  .activity-details h2 {
+    font-size: 16px; /* 調整標題字體大小 */
+    margin-bottom: 15px;
+  }
+
+  .activity-item {
+    margin-bottom: 8px;
+  }
+
+  .activity-icon img {
+    width: 16px; /* 縮小圖標 */
+    height: 16px;
+  }
+
+  .activity-cost,
+  .transfer-income {
+    font-size: 14px; /* 調整成本和收入字體大小 */
+  }
+
+  .chat-btn {
+    padding: 5px 6px;
+  }
+  .edit-btn,
+  .check-btn,
+  .settlement-btn {
+    padding: 4px 8px; /* 調整按鈕內邊距 */
+    font-size: 12px; /* 調整按鈕字體大小 */
+  }
+
+  .add-button {
+    position: fixed;
+    bottom: 10px; /* 與底部保持固定距離 */
+    left: 50%;
+    transform: translateX(-50%); /* 確保在寬度變化時保持居中 */
+    z-index: 1; 
+    width: 50px; /* 縮小新增按鈕 */
+    height: 50px;
+    font-size: 24px; /* 調整按鈕字體大小 */
+  }
+
+  a:hover {
+    font-size: 1em; /* 調整連結的字體大小 */
+  }
 }

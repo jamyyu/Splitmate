@@ -23,11 +23,19 @@
 .expense-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 1.2em;
 }
 
 .item-name {
   font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.item-name img {
+  width: 20px;
+  height: 20px;
 }
 
 .item-amount {
@@ -44,13 +52,13 @@
   font-size: small;
 }
 
-.payer-info, .debtor-info {
+.payer-info, .receiver-info {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.payer-icon, .debtor-icon {
+.payer-icon, .receiver-icon {
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -97,7 +105,7 @@
   color: white;
   font-size: 16px;
   cursor: pointer;
-  margin: 10px 0px 20px 10px;
+  margin: 10px 0px 20px 5px;
 }
 
 .edit-button {
@@ -121,7 +129,7 @@
   color: black;
   font-size: 16px;
   cursor: pointer;
-  margin: 10px 10px 20px 0px;
+  margin: 10px 5px 20px 0px;
 }
 
 .cancel-button:hover {
@@ -144,8 +152,8 @@
 
 .transfer-container {
   display: flex;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .transfer-container img {
@@ -155,9 +163,94 @@
 }
 
 .transfer-info {
+  margin-top: 10px;
   margin-bottom: 15px;
 }
 
 .transfer-info span {
   font-size: small;
+}
+
+
+@media (max-width: 700px) and (min-width: 360px) {
+  .expense-main {
+    padding: 15px;
+    width: 90%;
+  }
+
+  .expense-info {
+    width: 100%;
+  }
+
+  .expense-date {
+    font-size: 1em;
+    margin-bottom: 8px;
+  }
+
+  .expense-item {
+    font-size: 1em;
+  }
+
+  .item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .item-name img {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
+
+  .payer-info, .receiver-info {
+    margin-bottom: 10px;
+  }
+
+  .payer-icon, .receiver-icon {
+    height: 40px;
+    width: 40px;
+  }
+
+  .expense-note, .creation-info {
+    font-size: 0.8em;
+    margin-bottom: 8px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    padding: 10px 0; 
+    align-items: center; 
+    display: flex;
+  }
+
+  .delete-button,
+  .edit-button,
+  .cancel-button {
+    width: 90%;
+    max-width: 300px;
+  }
+
+  .expense-image img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .transfer-container {
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .transfer-container img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .transfer-info {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .transfer-info span {
+    font-size: 0.8em;
+  }
 }

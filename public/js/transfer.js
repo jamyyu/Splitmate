@@ -95,8 +95,8 @@ function renderTransfer(transferData ,token){
   const mainCurrencySymbol = currency_symbols[mainCurrency] || mainCurrency;
   const transferFromName = document.querySelector('.payer-name');
   const transferFromIcon = document.querySelector('.payer-icon');
-  const transferToName = document.querySelector('.debtor-name');
-  const transferToIcon = document.querySelector('.debtor-icon');
+  const transferToName = document.querySelector('.receiver-name');
+  const transferToIcon = document.querySelector('.receiver-icon');
   // 檢查轉帳人，如果是userData.name，顯示'你'
   const transferFromNameText = transferData.transferFrom[0].transferFrom_name === userData.name ? '你' : transferData.transferFrom[0].transferFrom_name;
   transferFromName.textContent = transferFromNameText;

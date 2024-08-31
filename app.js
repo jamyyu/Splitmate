@@ -8,6 +8,8 @@ import groupRoutes from './routes/groupRoute.js';
 import expenseRoutes from './routes/expenseRoute.js';
 import transferRoutes from './routes/transferRoute.js';
 import { get404Page } from './controllers/error.js';
+import { Server } from 'socket.io';
+import { setupSocketIO } from './controllers/socketController.js';
 
 
 const app = express();
@@ -46,6 +48,10 @@ app.get('/group/:groupId', (req, res) => {
 app.get('/group/:groupId/edit-group', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/edit-group.html'));
 });
+//查看個別群組頁面
+app.get('/group/:groupId/view-group', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/view-group.html'));
+});
 //新增花費／轉帳頁面
 app.get('/group/:groupId/create-record', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/create-record.html'));
@@ -77,13 +83,17 @@ app.use('/', expenseRoutes);
 app.use('/', transferRoutes);
 
 
-
-
-
-
-
-
 app.use(get404Page);
 
+
+// 創建 HTTP 伺服器
 const server = http.createServer(app);
+
+// 創建 Socket.IO 伺服器並綁定到 HTTP 伺服器上
+const io = new Server(server);
+
+// 使用 Socket.IO 控制器來設置 Socket.IO 事件
+setupSocketIO(io);
+
+
 server.listen(3000, () => {console.log('Server is running on port 3000')});

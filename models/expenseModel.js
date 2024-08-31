@@ -158,7 +158,6 @@ export const getExpense = async (groupId, expenseId) => {
       e.time DESC;
   `;
   const results = await Database.executeQuery(query, [groupId, expenseId]);
-  console.log('getExpense', results);
   return results;
 };
 
@@ -169,9 +168,22 @@ export const deleteExpense = async (expenseId) => {
   return results;
 }
 
+
 export const getGroupBalance = async (groupId) => {
   const query = `
-    WITH AmountPaid AS (
+    WITH AllMembers AS (
+      SELECT 
+        COALESCE(u.name, gmm.member_name) AS member,
+        COALESCE(u.image_name, null) AS image,
+        gmm.splitgroup_id
+      FROM 
+        GroupMemberMapping gmm
+      LEFT JOIN 
+        user u ON gmm.user_id = u.id
+      WHERE 
+        gmm.splitgroup_id = ?
+    ),
+    AmountPaid AS (
       SELECT 
         COALESCE(u.name, gmm.member_name) AS member, 
         SUM(p.mainCurrencyAmount) AS totalAmountPaid,
@@ -240,81 +252,26 @@ export const getGroupBalance = async (groupId) => {
         COALESCE(u.name, gmm.member_name), t.splitgroup_id
     )
     SELECT 
-      member,
-      SUM(totalAmountPaid) AS totalAmountPaid,
-      SUM(totalAmountToPay) AS totalAmountToPay,
-      SUM(balance) AS balance
-    FROM (
-      SELECT 
-        COALESCE(AP.member, ATP.member) AS member,
-        COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0) AS totalAmountPaid,
-        COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0) AS totalAmountToPay,
-        (COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0)) - 
-        (COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0)) AS balance
-      FROM 
-        AmountPaid AP
-      LEFT JOIN 
-        AmountToPay ATP ON AP.member = ATP.member AND AP.splitgroup_id = ATP.splitgroup_id
-      LEFT JOIN 
-        TransferPaid TP ON AP.member = TP.member AND AP.splitgroup_id = TP.splitgroup_id
-      LEFT JOIN 
-        TransferReceived TR ON AP.member = TR.member AND AP.splitgroup_id = TR.splitgroup_id
-
-      UNION
-
-      SELECT 
-        COALESCE(AP.member, ATP.member) AS member,
-        COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0) AS totalAmountPaid,
-        COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0) AS totalAmountToPay,
-        (COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0)) - 
-        (COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0)) AS balance
-      FROM 
-        AmountToPay ATP
-      LEFT JOIN 
-        AmountPaid AP ON ATP.member = AP.member AND ATP.splitgroup_id = AP.splitgroup_id
-      LEFT JOIN 
-        TransferPaid TP ON ATP.member = TP.member AND ATP.splitgroup_id = TP.splitgroup_id
-      LEFT JOIN 
-        TransferReceived TR ON ATP.member = TR.member AND ATP.splitgroup_id = TR.splitgroup_id
-
-      UNION
-
-      SELECT 
-        COALESCE(AP.member, TP.member) AS member,
-        COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0) AS totalAmountPaid,
-        COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0) AS totalAmountToPay,
-        (COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0)) - 
-        (COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0)) AS balance
-      FROM 
-        TransferPaid TP
-      LEFT JOIN 
-        AmountPaid AP ON TP.member = AP.member AND TP.splitgroup_id = AP.splitgroup_id
-      LEFT JOIN 
-        AmountToPay ATP ON TP.member = ATP.member AND TP.splitgroup_id = ATP.splitgroup_id
-      LEFT JOIN 
-        TransferReceived TR ON TP.member = TR.member AND TP.splitgroup_id = TR.splitgroup_id
-
-      UNION
-
-      SELECT 
-        COALESCE(ATP.member, TR.member) AS member,
-        COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0) AS totalAmountPaid,
-        COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0) AS totalAmountToPay,
-        (COALESCE(AP.totalAmountPaid, 0) + COALESCE(TP.totalAmountPaid, 0)) - 
-        (COALESCE(ATP.totalAmountToPay, 0) + COALESCE(TR.totalAmountReceived, 0)) AS balance
-      FROM 
-        TransferReceived TR
-      LEFT JOIN 
-        AmountPaid AP ON TR.member = AP.member AND TR.splitgroup_id = AP.splitgroup_id
-      LEFT JOIN 
-        AmountToPay ATP ON TR.member = ATP.member AND TR.splitgroup_id = ATP.splitgroup_id
-      LEFT JOIN 
-        TransferPaid TP ON TR.member = TP.member AND TR.splitgroup_id = TP.splitgroup_id
-    ) AS balances
+      am.member,
+      am.image,
+      COALESCE(ap.totalAmountPaid, 0) + COALESCE(tp.totalAmountPaid, 0) AS totalAmountPaid,
+      COALESCE(atp.totalAmountToPay, 0) + COALESCE(tr.totalAmountReceived, 0) AS totalAmountToPay,
+      (COALESCE(ap.totalAmountPaid, 0) + COALESCE(tp.totalAmountPaid, 0)) - 
+      (COALESCE(atp.totalAmountToPay, 0) + COALESCE(tr.totalAmountReceived, 0)) AS balance
+    FROM 
+      AllMembers am
+    LEFT JOIN 
+      AmountPaid ap ON am.member = ap.member AND am.splitgroup_id = ap.splitgroup_id
+    LEFT JOIN 
+      AmountToPay atp ON am.member = atp.member AND am.splitgroup_id = atp.splitgroup_id
+    LEFT JOIN 
+      TransferPaid tp ON am.member = tp.member AND am.splitgroup_id = tp.splitgroup_id
+    LEFT JOIN 
+      TransferReceived tr ON am.member = tr.member AND am.splitgroup_id = tr.splitgroup_id
     GROUP BY 
-      member;
+      am.member, am.image;
   `;
-  const results = await Database.executeQuery(query, [groupId, groupId, groupId, groupId]);
-  console.log('getGroupBalances', results);
+  const results = await Database.executeQuery(query, [groupId, groupId, groupId, groupId, groupId]);
   return results;
 };
+

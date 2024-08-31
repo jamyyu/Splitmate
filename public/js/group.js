@@ -135,13 +135,18 @@ function renderRecord(recordData, token) {
     'XDR': 'SDR', 'XOF': 'CFA', 'XPF': 'F', 'YER': '﷼', 'ZAR': 'R',
     'ZMW': 'ZK', 'ZWL': 'Z$'
   };
-
+  const categoryImages = {
+    '食': '/images/食.png',
+    '衣': '/images/衣.png',
+    '住': '/images/住.png',
+    '行': '/images/行.png',
+    '育': '/images/育.png',
+    '樂': '/images/樂.png'
+  };
   // 解碼 JWT，獲取用戶數據
   const userData = parseJwt(token);
-
   // 選擇 .activity-details 容器
   const activityDetailsContainer = document.querySelector('.activity-details');
-
   // 遍歷每個日期組
   recordData.forEach(group => {
     // 創建一個包含日期的 <h2> 元素
@@ -151,32 +156,29 @@ function renderRecord(recordData, token) {
         month: 'long',
         day: 'numeric'
     });
-
     // 將日期添加到 .activity-details 容器
     activityDetailsContainer.appendChild(dateHeading);
-
     // 遍歷每個日期下的records
     group.records.forEach(record => {
       if(record.record_type === 'expense'){
         // 查找當前用戶在members中的分攤金額
         const userMember = record.members.find(member => member.member === userData.name);
         const userMemberAmount = userMember ? userMember.member_amount : '';
-
         // 創建<a>標籤
         const link = document.createElement("a");
         link.setAttribute("href", `/expense/${record.record_id}`);
-
         // 創建 .activity-item 容器
         const activityItemDiv = document.createElement('div');
         activityItemDiv.classList.add('activity-item');
-
         // 創建 .activity-description 容器
         const activityDescriptionDiv = document.createElement('div');
         activityDescriptionDiv.classList.add('activity-description');
 
         const activityIconSpan = document.createElement('span');
+        const activityImg = document.createElement('img');
+        activityImg.src = categoryImages[record.category];
+        activityIconSpan.appendChild(activityImg);
         activityIconSpan.classList.add('activity-icon');
-        activityIconSpan.textContent = record.category; // 替換成實際的類別圖標
 
         const itemText = document.createTextNode(` ${record.item}`);
 
@@ -192,21 +194,16 @@ function renderRecord(recordData, token) {
         activityDescriptionDiv.appendChild(activityIconSpan);
         activityDescriptionDiv.appendChild(itemText);
         activityDescriptionDiv.appendChild(activityCostSpan);
-        
-
         // 創建 .activity-payment 容器
         const activityPaymentDiv = document.createElement('div');
         activityPaymentDiv.classList.add('activity-payment');
-        
         // 檢查payer，如果是userData.name，顯示'你'
         const payerText = record.payer === userData.name ? '你' : record.payer;
         const currencySymbol = currency_symbols[record.currency] || record.currency;
         activityPaymentDiv.textContent = `${payerText} 先付 ${currencySymbol}${record.paid_amount}`;
-
         // 將 .activity-description 和 .activity-payment 容器添加到 .activity-item 容器
         activityItemDiv.appendChild(activityDescriptionDiv);
         activityItemDiv.appendChild(activityPaymentDiv);
-
         // 將 .activity-item 容器添加到 <a>，再把 <a>加到 .activity-details 容器
         link.appendChild(activityItemDiv);
         activityDetailsContainer.appendChild(link);
@@ -214,19 +211,16 @@ function renderRecord(recordData, token) {
         // 創建<a>標籤
         const link = document.createElement("a");
         link.setAttribute("href", `/transfer/${record.record_id}`);
-
         // 創建 .activity-item 容器
         const activityItemDiv = document.createElement('div');
         activityItemDiv.classList.add('activity-item');
-
         // 創建 .activity-description 容器
         const activityDescriptionDiv = document.createElement('div');
         activityDescriptionDiv.classList.add('activity-description');
 
-
         const activityIconSpan = document.createElement('span');
         activityIconSpan.classList.add('activity-icon');
-        activityIconSpan.textContent = '💸'; // 替換成實際的類別圖標
+        activityIconSpan.textContent = '💸'; 
 
         const payerText = record.payer === userData.name ? '你' : record.payer;
         const memberText = record.members[0].member === userData.name ? '你' : record.members[0].member;
@@ -245,15 +239,12 @@ function renderRecord(recordData, token) {
           const currencySymbol = currency_symbols[record.currency] || record.currency;
           activityCostSpan.textContent = `${currencySymbol}${userMemberAmount}`;
         } // 如果userMemberAmount是空的，則不顯示currency和amount
-
         // 將所有子元素添加到 .activity-description 容器
         activityDescriptionDiv.appendChild(activityIconSpan);
         activityDescriptionDiv.appendChild(itemTextElement);
         activityDescriptionDiv.appendChild(activityCostSpan);
-
         // 將 .activity-description 添加到 .activity-item 容器
         activityItemDiv.appendChild(activityDescriptionDiv);
-
         // 將 .activity-item 容器添加到 <a>，再把 <a>加到 .activity-details 容器
         link.appendChild(activityItemDiv);
         activityDetailsContainer.appendChild(link);

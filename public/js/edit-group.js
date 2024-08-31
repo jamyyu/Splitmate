@@ -135,7 +135,7 @@ function renderCurrentData(recordData) {
     if (member.role === 'admin'){
       const token = localStorage.getItem('token');
       userData = parseJwt(token);
-      memberName = document.querySelector('.member-name');
+      const memberName = document.querySelector('.member-name');
       memberName.textContent = userData['name'];
       const memberEmailSpan = document.createElement('span');
       memberEmailSpan.textContent = ` (${userData['email']})`;

@@ -9,7 +9,6 @@ import jwt from 'jsonwebtoken';
 
 export const getExchangeRate = async (req, res) => {
   const { mainCurrency, currency } = req.query;
-  console.log(mainCurrency, currency)
   try {
     // 向第三方匯率 API 發送請求
     const response = await fetch(`https://v6.exchangerate-api.com/v6/a664377d1b9acb7d3f693b44/latest/${currency}`);
@@ -98,7 +97,6 @@ export const getAllRecordData = async (req, res) => {
     // 獲取路由中的 groupId 參數
     const groupId = req.params.groupId;
     let results = await getAllRecord(groupId);
-    console.log(results)
   
     // 確保 result.date 是字串
     results.forEach(result => {
@@ -167,7 +165,7 @@ export const getAllRecordData = async (req, res) => {
       });
     // 返回排序後的數據
     res.status(200).json({ recordData: sortedGroupedByDate });
-    console.log(JSON.stringify(sortedGroupedByDate, null, 2));
+    //console.log(JSON.stringify(sortedGroupedByDate, null, 2));
   } catch (error) {
     return res.status(400).json({ error: true, message: error.message });
   }
@@ -179,7 +177,7 @@ function removeTrailingZeros(value) {
     value = parseFloat(value);  // 將字符串轉換為數字
   }
   if (typeof value === 'number') {
-    const formattedValue = parseFloat(value.toFixed(4)).toLocaleString('en-US', {
+    const formattedValue = parseFloat(value.toFixed(3)).toLocaleString('en-US', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 4
     });
@@ -282,7 +280,50 @@ export const getGroupBalanceData = async (req, res) => {
   try{
     const groupId = req.params.groupId;
     let groupBalanceData = await getGroupBalance(groupId);
-    res.status(200).json({ groupBalanceData: groupBalanceData });
+    // 處理balance數據，去除多餘的0
+    groupBalanceData = groupBalanceData.map(member => {
+      member.balance = removeTrailingZeros(member.balance);
+      return member;
+    });
+    // 轉換 balance 為數字，並去除逗號
+    const sortedBalanceData = JSON.parse(JSON.stringify(groupBalanceData));
+    sortedBalanceData.forEach(member => {
+      member.balance = parseFloat(member.balance.replace(/,/g, ''));
+    });
+    // 按餘額排序，從最低到最高
+    sortedBalanceData.sort((a, b) => a.balance - b.balance);
+
+    const payments = [];
+    let x = 0;
+    let y = sortedBalanceData.length - 1;
+
+    while (x < y) {
+      const payer = sortedBalanceData[x];
+      const receiver = sortedBalanceData[y];
+      const paymentAmount = Math.min(-payer.balance, receiver.balance);
+      
+      if (paymentAmount !==0){
+        payments.push({
+          from: payer.member,
+          payerImage: payer.image,
+          to: receiver.member,
+          receiverImage: receiver.image,
+          amount: removeTrailingZeros(paymentAmount)
+        });
+      }
+
+      payer.balance += paymentAmount;
+      receiver.balance -= paymentAmount;
+
+      if (payer.balance === 0) {
+        x++;
+      }
+
+      if (receiver.balance === 0) {
+        y--;
+      }
+    }
+    res.status(200).json({ groupBalanceData: groupBalanceData, payments: payments });
     console.log(JSON.stringify(groupBalanceData, null, 2));
   } catch (error) {
     return res.status(400).json({ error: true, message: error.message });

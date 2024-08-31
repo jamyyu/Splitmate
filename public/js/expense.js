@@ -67,6 +67,14 @@ function renderExpense(expenseData, token){
     'XDR': 'SDR', 'XOF': 'CFA', 'XPF': 'F', 'YER': '﷼', 'ZAR': 'R',
     'ZMW': 'ZK', 'ZWL': 'Z$'
   };
+  const categoryImages = {
+    '食': '/images/食.png',
+    '衣': '/images/衣.png',
+    '住': '/images/住.png',
+    '行': '/images/行.png',
+    '育': '/images/育.png',
+    '樂': '/images/樂.png'
+  };
   const userData = parseJwt(token);
   const expenseDate = document.querySelector('.expense-date');
   expenseDate.textContent = new Date(expenseData.date).toLocaleDateString('zh-TW', {
@@ -75,7 +83,11 @@ function renderExpense(expenseData, token){
     day: 'numeric'
   }) + '\u00A0' + expenseData.time.slice(0, 5);
   const itemName = document.querySelector('.item-name');
-  itemName.textContent = expenseData.category + '\u00A0' + expenseData.item;
+  const itemImg = document.createElement('img');
+  itemName.appendChild(itemImg);
+  itemImg.src = categoryImages[expenseData.category];
+  const itemText = document.createTextNode('\u00A0' + expenseData.item);
+  itemName.appendChild(itemText); // 添加文字到 itemName
   const itemAmount = document.querySelector('.item-amount');
   const rate = document.getElementById('rate');
   const groupData = JSON.parse(sessionStorage.getItem('groupData'));
@@ -102,28 +114,28 @@ function renderExpense(expenseData, token){
   // 想插入的參考點
   const referencePoint = document.getElementById('reference-point');
   expenseData.members.forEach(member => {
-    const debtorInfo = document.createElement('div');
-    debtorInfo.className = 'debtor-info';
-    const debtorIcon = document.createElement('img');
-    debtorIcon.className = 'debtor-icon';
-    debtorIcon.alt = 'Debtor Icon';
-    const debtorName = document.createElement('span');
-    debtorName.className = 'debtor-name';
+    const receiverInfo = document.createElement('div');
+    receiverInfo.className = 'receiver-info';
+    const receiverIcon = document.createElement('img');
+    receiverIcon.className = 'receiver-icon';
+    receiverIcon.alt = 'Receiver Icon';
+    const receiverName = document.createElement('span');
+    receiverName.className = 'receiver-name';
     const memberText = member.member_name === userData.name ? '你' : member.member_name;
 
-    debtorInfo.appendChild(debtorIcon);
-    debtorInfo.appendChild(debtorName);
-    referencePoint.insertAdjacentElement('beforebegin', debtorInfo);
+    receiverInfo.appendChild(receiverIcon);
+    receiverInfo.appendChild(receiverName);
+    referencePoint.insertAdjacentElement('beforebegin', receiverInfo);
     
     if (member.member_image_name){
-      debtorIcon.src = 'https://d3q4cpn0fxi6na.cloudfront.net/' + member.member_image_name;
+      receiverIcon.src = 'https://d3q4cpn0fxi6na.cloudfront.net/' + member.member_image_name;
     } else {
-      debtorIcon.src = '/images/profile-icon.png';
+      receiverIcon.src = '/images/profile-icon.png';
     }
     if (mainCurrency === expenseData.currency){
-      debtorName.textContent = memberText + '\u00A0' + '欠款' + '\u00A0' + currencySymbol + member.member_amount;
+      receiverName.textContent = memberText + '\u00A0' + '欠款' + '\u00A0' + currencySymbol + member.member_amount;
     } else {
-      debtorName.textContent = `${memberText}\u00A0欠款\u00A0${currencySymbol}${member.member_amount}\u00A0(${mainCurrencySymbol}${member.member_main_currency_amount})`;
+      receiverName.textContent = `${memberText}\u00A0欠款\u00A0${currencySymbol}${member.member_amount}\u00A0(${mainCurrencySymbol}${member.member_main_currency_amount})`;
     }
   });
   const note = document.querySelector('.note');

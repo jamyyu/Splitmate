@@ -111,7 +111,6 @@ export const getGroupsData = async (req, res) => {
       const imageUrl = `https://d3q4cpn0fxi6na.cloudfront.net/${image_name}`;
       return { ...rest, image_url: imageUrl }; // 使用解構賦值並添加新的 image_url 字段
     });
-    console.log('結果', updatedGroupsData);
     res.status(200).json({ data: updatedGroupsData });
   } catch (error) {
     console.error('資料庫查詢失敗:', error);
@@ -196,7 +195,6 @@ export const updateGroupData = async(req, res) => {
     }));
     // 將 req.body 轉換為普通物件
     const plainBody = convertToPlainObject(req.body);
-    console.log(plainBody);
     // 驗證成員電子郵件
     for (let member of plainBody.members) {
       if (!validator.isEmail(member.email)) {
