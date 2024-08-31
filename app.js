@@ -9,7 +9,7 @@ import expenseRoutes from './routes/expenseRoute.js';
 import transferRoutes from './routes/transferRoute.js';
 import { get404Page } from './controllers/error.js';
 import { Server } from 'socket.io';
-import { setupSocketIO } from './controllers/socketController.js';
+
 
 
 const app = express();
@@ -90,12 +90,7 @@ app.use(get404Page);
 const server = http.createServer(app);
 
 // 創建 Socket.IO 伺服器並綁定到 HTTP 伺服器上
-const io = require('socket.io')(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
-});
+const io = new Server(server);
 
 // 使用 Socket.IO 控制器來設置 Socket.IO 事件
 setupSocketIO(io);
