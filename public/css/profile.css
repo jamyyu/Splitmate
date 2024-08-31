@@ -80,3 +80,47 @@
 .save-button:hover {
   background-color: #1AA34A;
 }
+
+
+@media (max-width: 700px) and (min-width: 360px) {
+  .main-content {
+    padding: 15px;
+    max-width: 100%;
+    align-items: stretch;
+  }
+
+  .profile-container {
+    width: 100%;
+    padding-top: 15px;
+  }
+
+  .profile-picture-img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .edit-button {
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .edit-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-group input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .save-button {
+    width: 100%;
+    max-width: 300px;
+    margin: 15px 0;
+  }
+}

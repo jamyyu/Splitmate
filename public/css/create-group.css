@@ -36,7 +36,6 @@
 
 #imageUpload {
   display: block;
-  margin: 10px auto 0; /* 置中 */
   cursor: pointer;
 }
 
@@ -150,7 +149,7 @@ select {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  margin: 10px 10px 20px 0px;
+  margin: 10px 20px 20px 5px;
 }
 
 .create-newgroup-button:hover {
@@ -166,7 +165,7 @@ select {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  margin: 10px 10px 20px 0px;
+  margin: 10px 20px 20px 5px;
 }
 
 .update-button:hover {
@@ -182,7 +181,7 @@ select {
   color: black;
   font-size: 16px;
   cursor: pointer;
-  margin: 10px 10px 20px 0px;
+  margin: 10px 5px 20px 20px;
 }
 
 .cancel-button:hover {
@@ -215,4 +214,95 @@ input[readonly] {
 
 .delete-button:hover {
   background-color: #c0392b;
+}
+
+.back-button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #52bc8b;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 20px;
+}
+
+.back-button:hover {
+  background-color: #1AA34A;
+}
+
+
+@media (max-width: 700px) and (min-width: 360px) {
+  .main-content {
+    padding: 15px; 
+    max-width: 90%;
+    align-items: stretch;
+  }
+
+  .profile-section {
+    width: 90%; 
+    display: flex;
+    flex-direction: column;
+  }
+
+  .group-section {
+    padding: 15px; 
+    width: 90%;
+  }
+
+  .create-group-container {
+    flex-direction: column; 
+    align-items: center; 
+  }
+
+  .button-container, .delete-button-container {
+    width: 100%;
+    padding: 10px 0; 
+    align-items: center; 
+    display: flex;
+  }
+
+  .update-button,
+  .cancel-button {
+    width: 90%; 
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .delete-button {
+    margin-top: 20px;
+  }
+
+  .members {
+    width: 100%;
+  }
+
+  .member-inputs input {
+    width: 100%; /* 讓輸入框在小屏幕下全寬 */
+    margin-bottom: 10px; /* 增加底部間距 */
+    padding: 8px; /* 縮小 padding */
+  }
+
+  .add-person {
+    margin-bottom: 15px; /* 縮小下方間距 */
+  }
+
+  select {
+    width: 100%;
+    padding: 8px; /* 縮小 padding */
+  }
+
+  #group-name {
+    padding: 8px; /* 縮小 padding */
+  }
+
+  .delete-button-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .profile-image {
+    height: auto; /* 自適應高度 */
+  }
 }
