@@ -46,6 +46,7 @@ function fetchGroup(){
     if(checkBtn){
       clickCheckBtn();
     }
+    initializeChat();
   })
   .catch(error => {
     console.error("Error fetching data:", error);
@@ -320,4 +321,104 @@ function clickCheckBtn(){
     const groupId = pathname.split('/')[2];
     window.location.href = `/group/${groupId}/view-group`;
   })
+}
+
+
+function initializeChat() {
+  // 確保 groupData 已正確存儲在 sessionStorage 中
+  const groupData = JSON.parse(sessionStorage.getItem('groupData'));
+  if (!groupData) {
+    console.error("群組資料未正確存儲，無法初始化聊天。");
+    return;
+  }
+
+  const token = localStorage.getItem('token');
+  const userData = parseJwt(token);
+  const groupId = groupData.id;
+  const userId = userData.id;
+  const userName = userData.name;
+
+  // 初始化 Socket.IO 客戶端
+  const socket = io('wss://splitmate.site', {
+    reconnection: true,
+    reconnectionAttempts: Infinity,
+    reconnectionDelay: 1000,
+    timeout: 20000,
+  });
+
+  // 監聽 connect 事件，確保每次連接時都會自動加入群組
+  socket.on('connect', () => {
+    console.log('連接成功，加入群組');
+    socket.emit('joinGroup', groupId);
+  });
+
+  // 點擊聊天按鈕顯示/隱藏聊天視窗
+  const chatToggleBtn = document.getElementById('chat-toggle-btn');
+  const closeChatBtn = document.getElementById('close-chat-btn');
+  const sendButton = document.getElementById('send-button');
+  const messageInput = document.getElementById('message-input');
+  const chatBody = document.getElementById('chat-body');
+
+  chatToggleBtn.addEventListener('click', function () {
+    document.getElementById('chat-window').classList.toggle('show');
+  });
+
+  closeChatBtn.addEventListener('click', function () {
+    document.getElementById('chat-window').classList.remove('show');
+  });
+
+  sendButton.addEventListener('click', function () {
+    sendMessage();
+  });
+
+  messageInput.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  });
+
+  // 發送消息的函數
+  function sendMessage() {
+    const messageText = messageInput.value.trim();
+    if (messageText) {
+      const messageData = { groupId, userId, userName, message: messageText };
+      socket.emit('sendMessage', messageData);
+      displayMessage(messageData, 'right');
+      messageInput.value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  }
+
+  // 接收到新消息事件
+  socket.on('newMessage', (data) => {
+    if (data.userId !== userId) {
+      displayMessage(data, 'left');
+    }
+  });
+
+  // 動態顯示消息的函數
+  function displayMessage(data, side) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', `message-${side}`);
+
+    const contentDiv = document.createElement('div');
+    contentDiv.classList.add('message-content');
+    contentDiv.textContent = data.message;
+    messageDiv.appendChild(contentDiv);
+
+    const infoDiv = document.createElement('div');
+    infoDiv.classList.add('message-info');
+    const senderSpan = document.createElement('span');
+    senderSpan.classList.add('message-sender');
+    senderSpan.textContent = side === 'left' ? data.userName : '你';
+    const timeSpan = document.createElement('span');
+    timeSpan.classList.add('message-time');
+    timeSpan.textContent = new Date().toLocaleTimeString();
+    infoDiv.appendChild(senderSpan);
+    infoDiv.appendChild(timeSpan);
+
+    messageDiv.appendChild(infoDiv);
+    chatBody.appendChild(messageDiv);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
 }
