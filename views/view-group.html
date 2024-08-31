@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Splitmate</title>
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/create-group.css">
+  <script src="/js/header.js"></script>
+  <script src="/js/view-group.js" defer></script>
+  <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="/images/favicon-white.png" alt="Splitmate Logo">
+    </div>
+    <div class="page-title">查看群組</div>
+    <div class="user-info">
+      <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+      <div class="dropdown-menu" id="dropdown-menu">
+        <div class="menu-item" data-action="profile">個人檔案</div>
+        <div class="menu-item" data-action="groups">我的群組</div>
+        <div class="menu-item" data-action="payments">我的收款</div>
+        <div class="menu-item" data-action="logout">登出</div>
+      </div>
+    </div>
+  </header>
+  <main class="main-content">
+    <form id="groupForm">
+      <div class="top-section">
+        <div class="create-group-container">
+          <div class="profile-section">
+            <img src="/images/favicon.png" alt="Profile Image" class="profile-image">
+          </div>
+          <div class="group-section">
+            <label for="group-name">群組名稱</label>
+            <input type="text" id="group-name" name="groupName" placeholder="幫群組命名" required>
+            <div class="group-members-title">群組成員</div>
+            <div id="membersContainer" class="members">
+              <div class="member">
+                <div class="member-name"><span id="member-email"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="button-container">
+        <button class="back-button">回群組</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
