@@ -210,7 +210,6 @@ a:hover img {
   }
   .edit-btn,
   .check-btn,
-  .back-btn,
   .settlement-btn {
     padding: 4px 8px; /* 調整按鈕內邊距 */
     font-size: 12px; /* 調整按鈕字體大小 */
