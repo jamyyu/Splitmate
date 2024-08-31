@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // 初始化 Socket.IO 客戶端
-  const socket = io('wss://splitmate.site', {
+  const socket = io('https://splitmate.site', {
     reconnection: true, // 開啟自動重連
     reconnectionAttempts: Infinity, // 無限次重連
     reconnectionDelay: 1000, // 每次重連間隔1秒
