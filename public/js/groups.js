@@ -54,7 +54,12 @@ function renderGroups(data) {
     groupCard.classList.add('group-card');
     groupName.textContent = item.name;
     groupName.classList.add('group-name');
-    imageElement.src = item.image_url;
+    if (item.image_url === 'https://d3q4cpn0fxi6na.cloudfront.net/null'){
+      imageElement.src = '/images/template.jpg';
+    } else {
+      imageElement.src = item.image_url;
+    }
+    
     
     groupCard.appendChild(imageElement);
     groupCard.appendChild(groupName);

@@ -61,4 +61,28 @@ export class Database {
       }
     }
   }
+  // 新增的事務處理方法
+  static async beginTransaction() {
+    const connection = await pool.getConnection();
+    await connection.beginTransaction();
+    return connection; // 返回此連接以便在後續操作中使用
+  }
+
+  static async commitTransaction(connection) {
+    try {
+      await connection.commit();
+    } finally {
+      connection.release(); // 事務提交後，釋放連接
+    }
+  }
+
+  static async rollbackTransaction(connection) {
+    try {
+      await connection.rollback();
+    } finally {
+      connection.release(); // 事務回滾後，釋放連接
+    }
+  }
 }
+
+

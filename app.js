@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import userRoutes from './routes/userRoute.js';
 import groupRoutes from './routes/groupRoute.js';
 import expenseRoutes from './routes/expenseRoute.js';
+import transferRoutes from './routes/transferRoute.js';
 import { get404Page } from './controllers/error.js';
 
 
@@ -41,13 +42,21 @@ app.get('/groups/create-group', (req, res) => {
 app.get('/group/:groupId', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/group.html'));
 });
+//編輯個別群組頁面
+app.get('/group/:groupId/edit-group', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/edit-group.html'));
+});
 //新增花費／轉帳頁面
 app.get('/group/:groupId/create-record', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/create-record.html'));
 });
 //花費紀錄頁面
-app.get('/record/:expenseId', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/record.html'));
+app.get('/expense/:expenseId', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/expense.html'));
+});
+//轉帳紀錄頁面
+app.get('/transfer/:transfer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/transfer.html'));
 });
 //結餘頁面
 app.get('/group/:groupId/balance', (req, res) => {
@@ -64,6 +73,9 @@ app.use('/', userRoutes);
 app.use('/', groupRoutes);
 //費用 API
 app.use('/', expenseRoutes);
+//轉帳 API
+app.use('/', transferRoutes);
+
 
 
 

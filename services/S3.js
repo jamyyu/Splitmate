@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { resizeImage } from './resizeImg.js';
 import dotenv from 'dotenv';
 import { randomBytes } from 'crypto';
@@ -40,5 +40,16 @@ export const uploadFileToS3 = async (file) => {
   const command = new PutObjectCommand(params);
   const uploadResult = await s3.send(command);
   return { ...uploadResult, key };
+};
+
+
+export const deleteFilefromS3 = async (imageName) => {
+  const params = {
+    Bucket: bucketName,
+    Key: imageName
+  };
+  const command = new DeleteObjectCommand(params);
+  const deleteResult = await s3.send(command);
+  return { ...deleteResult, imageName };
 };
 

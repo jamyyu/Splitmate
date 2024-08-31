@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Splitmate</title>
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/create-group.css">
+  <script src="/js/header.js"></script>
+  <script src="/js/edit-group.js" defer></script>
+  <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="/images/favicon-white.png" alt="Splitmate Logo">
+    </div>
+    <div class="page-title">編輯群組</div>
+    <div class="user-info">
+      <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+      <div class="dropdown-menu" id="dropdown-menu">
+        <div class="menu-item" data-action="profile">個人檔案</div>
+        <div class="menu-item" data-action="groups">我的群組</div>
+        <div class="menu-item" data-action="payments">我的收款</div>
+        <div class="menu-item" data-action="logout">登出</div>
+      </div>
+    </div>
+  </header>
+  <main class="main-content">
+    <form id="groupForm">
+      <div class="top-section">
+        <div class="create-group-container">
+          <div class="profile-section">
+            <img src="/images/favicon.png" alt="Profile Image" class="profile-image">
+            <input type="file" name="image" id="imageUpload" accept="image/*">
+            <div class="delete-button-container">
+              <button class="delete-button">刪除群組</button>
+            </div>
+          </div>
+          <div class="group-section">
+            <label for="group-name">群組名稱</label>
+            <input type="text" id="group-name" name="groupName" placeholder="幫群組命名" required>
+            <div class="group-members-title">群組成員</div>
+            <div id="membersContainer" class="members">
+              <div class="member">
+                <div class="member-name">Jamy Yu<span id="member-email">(jamy11212@gmail.com)</span></div>
+              </div>
+            </div>
+            <div class="add-person" id="addMemberButton">+ 新增成員</div>
+          </div>
+        </div>
+      </div>
+      <div class="button-container">
+        <button class="cancel-button">取消</button>
+        <button type="submit" class="update-button">更新</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

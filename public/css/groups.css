@@ -71,3 +71,7 @@
 .create-group-button:hover {
   background-color: #1AA34A; 
 }
+
+a {
+  cursor: pointer;  
+}

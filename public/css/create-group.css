@@ -142,7 +142,7 @@ select {
 }
 
 .create-newgroup-button {
-  width: 100%;
+  width: 80%;
   padding: 10px 20px;
   background-color: #52bc8b; 
   border: none;
@@ -150,8 +150,69 @@ select {
   color: white;
   font-size: 16px;
   cursor: pointer;
+  margin: 10px 10px 20px 0px;
 }
 
 .create-newgroup-button:hover {
   background-color: #1AA34A; 
+}
+
+.update-button {
+  width: 80%;
+  padding: 10px 20px;
+  background-color: #52bc8b; 
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 10px 20px 0px;
+}
+
+.update-button:hover {
+  background-color: #1AA34A;
+}
+
+.cancel-button {
+  width: 80%;
+  padding: 10px 20px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 10px 20px 0px;
+}
+
+.cancel-button:hover {
+  background-color: #bdbdbd;
+}
+
+input[readonly] {
+  background-color: #f0f0f0; 
+  color: #666; 
+}
+
+.delete-button-container {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.delete-button {
+  width: auto;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px;
+  margin-top: 30px;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
 }

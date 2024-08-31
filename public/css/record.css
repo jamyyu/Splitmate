@@ -7,7 +7,6 @@
 }
 
 .expense-info {
-  margin: 20px;
   width: 700px;
   flex: 1;
 }
@@ -24,7 +23,6 @@
 .expense-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
   font-size: 1.2em;
 }
 
@@ -36,6 +34,16 @@
   color: #e74c3c;
 }
 
+.exchange-rate {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.exchange-rate span {
+  font-size: small;
+}
+
 .payer-info, .debtor-info {
   display: flex;
   align-items: center;
@@ -43,8 +51,11 @@
 }
 
 .payer-icon, .debtor-icon {
-  width: 32px;
-  height: 32px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: white;
   margin-right: 10px;
 }
 
@@ -53,6 +64,14 @@
   height: 1px;
   background: #ccc; /* 可以根據需要更改顏色 */
   margin: 10px 0;  /* 控制分隔線的上下間距 */
+}
+
+.expense-note {
+  display: flex;
+  font-size: 0.9em;
+  text-align: center;
+  justify-content: flex-start;
+  margin-bottom: 10px;
 }
 
 .creation-info {
@@ -67,14 +86,6 @@
 .action-buttons {
   display: flex;
   justify-content: space-around;
-}
-
-.delete-button, .edit-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
-  cursor: pointer;
 }
 
 .delete-button {
@@ -101,3 +112,52 @@
   margin: 10px 0px 20px 10px;
 }
 
+.cancel-button {
+  width: 80%;
+  padding: 10px 20px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 10px 20px 0px;
+}
+
+.cancel-button:hover {
+  background-color: #bdbdbd;
+}
+
+.edit-button:hover {
+  background-color: #1AA34A;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+.expense-image img{
+  width: auto;
+  max-height: 500px;
+  margin-bottom: 20px;
+}
+
+.transfer-container {
+  display: flex;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.transfer-container img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.transfer-info {
+  margin-bottom: 15px;
+}
+
+.transfer-info span {
+  font-size: small;
+}

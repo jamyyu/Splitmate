@@ -34,13 +34,16 @@ export const getMemberByGroupId = async (groupId) => {
     gm.member_name,
     gm.role,
     gm.user_id,
-    u.name AS user_name
+    u.name AS user_name,
+    m.email AS member_email
   FROM 
     SplitGroup sg
   LEFT JOIN 
     GroupMemberMapping gm ON sg.id = gm.splitgroup_id
   LEFT JOIN 
     user u ON gm.user_id = u.id
+  LEFT JOIN
+    member m ON gm.member_id = m.id
   WHERE 
     sg.id = ?;
 `;
@@ -55,4 +58,18 @@ export const updateGroupMemberMappingUserId = async (userId, memberId) => {
   const results = await Database.executeQuery(query, [userId, memberId]);
   console.log('updateGroupMemberMappingUserId',results);
   return results;
+}
+
+
+export const removeMemberFromGroup = async (groupId, memberId) => {
+  const query = 'DELETE FROM GroupMemberMapping WHERE splitgroup_id = ? AND member_id = ?';
+  const results = await Database.executeQuery(query, [groupId, memberId]);
+  return results.affectedRows;
+}
+
+
+export const UpdateMemberInGroup = async (name, groupId, memberId) => {
+  const query = 'UPDATE GroupMemberMapping SET member_name = ? WHERE splitgroup_id = ? AND member_id = ?';
+  const results = await Database.executeQuery(query, [name, groupId, memberId]);
+  return results.affectedRows;
 }

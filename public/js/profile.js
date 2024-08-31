@@ -29,7 +29,7 @@ function handleProfilePictureUpload() {
       }
     } else {
       if (preview) {
-        preview.src = '/images/profile-icon.png'; // 可替換為你想顯示的默認圖片
+        preview.src = '/images/profile-icon.png'; 
       }
     }
   });
@@ -91,7 +91,7 @@ function handleProfileSubmit() {
       if (token) {
         localStorage.setItem('token', token);
         console.log(token)
-        window.location.href = '/groups'
+        window.location.reload();
       } else {
         throw result;
       }

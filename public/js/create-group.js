@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setCurrency();
   handleSubmit();
   renderUser();
+  clickCancelBtn();
 });
 
 function handleImageUpload() {
@@ -33,7 +34,7 @@ function handleImageUpload() {
     } else {
       // 清除圖片預覽
       if (preview) {
-        preview.src = '/images/pink.jpeg';
+        preview.src = '/images/favicon.png';
       }
     }
   });
@@ -122,7 +123,6 @@ function renderUser() {
   userData = parseJwt(token);
   memberName = document.querySelector('.member-name');
   memberName.textContent = userData['name'];
-  console.log(userData.name);
   const memberEmailSpan = document.createElement('span');
   memberEmailSpan.textContent = ` (${userData['email']})`;
   memberName.appendChild(memberEmailSpan);
@@ -191,4 +191,13 @@ function handleSubmit() {
       submitButton.disabled = false;
     });
   });
+}
+
+
+function clickCancelBtn() {
+  const CancelBtn = document.querySelector('.cancel-button');
+  CancelBtn.addEventListener('click',(e) => {
+    e.preventDefault(); // 防止預設行為
+    window.location.href = `/groups`;
+  })
 }

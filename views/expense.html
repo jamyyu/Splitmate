@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splitmate</title>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <script src="/js/header.js"></script>
+    <script src="/js/expense.js" defer></script>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="/images/favicon-white.png" alt="Splitmate Logo">
+    </div>
+    <div class="page-title">花費</div>
+    <div class="user-info">
+      <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+      <div class="dropdown-menu" id="dropdown-menu">
+        <div class="menu-item" data-action="profile">個人檔案</div>
+        <div class="menu-item" data-action="groups">我的群組</div>
+        <div class="menu-item" data-action="payments">我的收款</div>
+        <div class="menu-item" data-action="logout">登出</div>
+      </div>
+    </div>
+  </header>
+  <main class="expense-main">
+    <div class="expense-info">
+      <div class="expense-date"></div>
+      <div class="expense-item">
+        <span class="item-name"></span>
+        <span class="item-amount"></span>
+      </div>
+      <div class="exchange-rate">
+        <span id="rate"></span>
+      </div>
+      <div class="payer-info">
+        <img class="payer-icon" alt="Payer Icon">
+        <span class="payer-name"></span>
+      </div>
+      <hr class="divider">
+      <!--
+      <div class="debtor-info">
+        <img class="debtor-icon" alt="Debtor Icon">
+        <span class="debtor-name">阿周 欠款 NT$1,772</span>
+      </div>
+      -->
+      <hr class="divider" id="reference-point">
+      <div class="expense-note">
+        <span class="note"></span>
+      </div>
+      <div class="expense-image">
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button class="cancel-button">取消</button>
+      <button class="delete-button">刪除</button>
+    </div>
+  </main>
+</body>
+</html>
