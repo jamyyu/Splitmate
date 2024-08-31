@@ -8,6 +8,7 @@ import groupRoutes from './routes/groupRoute.js';
 import expenseRoutes from './routes/expenseRoute.js';
 import transferRoutes from './routes/transferRoute.js';
 import { get404Page } from './controllers/error.js';
+import { setupSocketIO } from './controllers/socketController.js'
 import { Server } from 'socket.io';
 
 
@@ -90,7 +91,12 @@ app.use(get404Page);
 const server = http.createServer(app);
 
 // 創建 Socket.IO 伺服器並綁定到 HTTP 伺服器上
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "https://splitmate.site", 
+    methods: ["GET", "POST"]
+  }
+});
 
 // 使用 Socket.IO 控制器來設置 Socket.IO 事件
 setupSocketIO(io);
