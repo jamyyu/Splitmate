@@ -4,7 +4,6 @@ import { Database } from '../dbconfig.js';
 export const addMemberToGroup = async (groupId, memberId, memberName, userId, role) => {
   const query = 'INSERT INTO GroupMemberMapping (splitgroup_id, member_id, member_name, user_id, role) VALUES (?, ?, ?, ?, ?)';
   const results = await Database.executeQuery(query, [groupId, memberId, memberName, userId, role]);
-  console.log('addMemberToGroup', results);
   return results;
 };
 
@@ -18,7 +17,6 @@ export const getGroupByUserId = async (userId) => {
     WHERE GroupMemberMapping.user_id = ?
   `;
   const results = await Database.executeQuery(query, [userId]);
-  console.log('getGroupByUserId',results);
   return results.length ? results : null; 
 };
 
@@ -48,7 +46,6 @@ export const getMemberByGroupId = async (groupId) => {
     sg.id = ?;
 `;
   const results = await Database.executeQuery(query, [groupId]);
-  console.log('getMemberByGroupId',results);
   return results.length ? results : null; 
 }
 
@@ -56,7 +53,6 @@ export const getMemberByGroupId = async (groupId) => {
 export const updateGroupMemberMappingUserId = async (userId, memberId) => {
   const query = 'UPDATE GroupMemberMapping SET user_id = ? WHERE member_id = ?';
   const results = await Database.executeQuery(query, [userId, memberId]);
-  console.log('updateGroupMemberMappingUserId',results);
   return results;
 }
 
