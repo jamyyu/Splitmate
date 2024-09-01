@@ -187,7 +187,7 @@ a:hover img {
   }
 
   .activity-details h2 {
-    font-size: 16px; /* 調整標題字體大小 */
+    font-size: 16px;
     margin-bottom: 15px;
   }
 
@@ -196,13 +196,13 @@ a:hover img {
   }
 
   .activity-icon img {
-    width: 16px; /* 縮小圖標 */
+    width: 16px;
     height: 16px;
   }
 
   .activity-cost,
   .transfer-income {
-    font-size: 14px; /* 調整成本和收入字體大小 */
+    font-size: 14px;
   }
 
   .chat-btn {
@@ -211,22 +211,22 @@ a:hover img {
   .edit-btn,
   .check-btn,
   .settlement-btn {
-    padding: 4px 8px; /* 調整按鈕內邊距 */
-    font-size: 12px; /* 調整按鈕字體大小 */
+    padding: 4px 8px;
+    font-size: 12px;
   }
 
   .add-button {
     position: fixed;
-    bottom: 10px; /* 與底部保持固定距離 */
+    bottom: 10px;
     left: 50%;
-    transform: translateX(-50%); /* 確保在寬度變化時保持居中 */
+    transform: translateX(-50%); 
     z-index: 1; 
-    width: 50px; /* 縮小新增按鈕 */
+    width: 50px;
     height: 50px;
-    font-size: 24px; /* 調整按鈕字體大小 */
+    font-size: 24px;
   }
 
   a:hover {
-    font-size: 1em; /* 調整連結的字體大小 */
+    font-size: 1em;
   }
 }

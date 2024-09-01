@@ -108,7 +108,6 @@
   resize: vertical;
 }
 
-/* 新增的樣式 */
 .input-group {
   position: relative;
   display: flex;
@@ -127,7 +126,7 @@
   padding: 10px;
   cursor: pointer;
   border-radius: 4px;
-  width: 50px; /* 控制圖標按鈕的寬度 */
+  width: 50px; 
 }
 
 .dropdown-content {
@@ -135,16 +134,16 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* 元素中心點對齊正中間 */
+  transform: translate(-50%, -50%); 
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  width: 80%; /* 寬度為視窗80% */
+  width: 80%; 
   max-width: 200px;
   padding: 20px;
-  max-height: 300px; /* 限制最大高度 */
+  max-height: 300px;
   overflow-y: auto; /* 當內容超出時顯示滾動條 */
 }
 
@@ -339,8 +338,8 @@
 @media (max-width: 700px) {
   .main-content {
     position: relative;
-    align-items: center; /* 水平置中 */
-    padding: 10px; /* 減小外邊距 */
+    align-items: center;
+    padding: 10px;
     width: 100%;
     height: 100%;
   }
