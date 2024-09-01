@@ -279,22 +279,22 @@ input[readonly] {
   }
 
   .member-inputs input {
-    width: 100%; /* 讓輸入框在小屏幕下全寬 */
-    margin-bottom: 10px; /* 增加底部間距 */
-    padding: 8px; /* 縮小 padding */
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
   }
 
   .add-person {
-    margin-bottom: 15px; /* 縮小下方間距 */
+    margin-bottom: 15px;
   }
 
   select {
     width: 100%;
-    padding: 8px; /* 縮小 padding */
+    padding: 8px;
   }
 
   #group-name {
-    padding: 8px; /* 縮小 padding */
+    padding: 8px;
   }
 
   .delete-button-container {
@@ -303,6 +303,6 @@ input[readonly] {
   }
 
   .profile-image {
-    height: auto; /* 自適應高度 */
+    height: auto;
   }
 }

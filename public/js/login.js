@@ -2,6 +2,30 @@ document.addEventListener("DOMContentLoaded", function() {
   clickToggleForms();
   signUp();
   signIn();
+
+  // 點擊 "立即登入使用" 按鈕顯示登入/註冊表單和遮罩層
+  const showLoginButton = document.querySelector('.signup-button');
+  const loginContainer = document.querySelector('.login-container');
+  const overlay = document.getElementById('overlay');
+
+  showLoginButton.addEventListener('click', function(event) {
+    loginContainer.classList.remove('hide'); // 顯示登入/註冊表單
+    overlay.classList.remove('hide'); // 顯示遮罩層
+    event.stopPropagation(); // 阻止事件冒泡
+  });
+
+  // 點擊遮罩層或表單外部時隱藏登入/註冊表單和遮罩層
+  document.addEventListener('click', function(event) {
+    if (!loginContainer.classList.contains('hide') && !loginContainer.contains(event.target) && !showLoginButton.contains(event.target)) {
+      loginContainer.classList.add('hide'); // 隱藏登入/註冊表單
+      overlay.classList.add('hide'); // 隱藏遮罩層
+    }
+  });
+
+  // 阻止點擊登入/註冊表單本身時關閉表單
+  loginContainer.addEventListener('click', function(event) {
+    event.stopPropagation(); // 阻止事件冒泡
+  });
 });
 
 function clickToggleForms() {
@@ -30,9 +54,6 @@ function clickToggleForms() {
     signInButton.classList.remove('active');
   });
 }
-
-
-
 
 function signUp() {
   const signUpForm = document.getElementById('sign-up-form');
@@ -83,7 +104,6 @@ function signUp() {
   });
 }
 
-
 function signIn() {
   const signin = document.getElementById('sign-in-form');
   signin.addEventListener('submit', (e) => {
@@ -102,8 +122,7 @@ function signIn() {
       token = result.token;
       if (token) {
         localStorage.setItem('token', token);
-        //console.log(token)
-        window.location.href = '/groups'
+        window.location.href = '/groups';
       } else {
         throw result;
       }
