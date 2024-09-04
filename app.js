@@ -7,6 +7,7 @@ import userRoutes from './routes/userRoute.js';
 import groupRoutes from './routes/groupRoute.js';
 import expenseRoutes from './routes/expenseRoute.js';
 import transferRoutes from './routes/transferRoute.js';
+import accountRoutes from './routes/accountRoute.js';
 import { get404Page } from './controllers/error.js';
 import { setupSocketIO } from './controllers/socketController.js'
 import { Server } from 'socket.io';
@@ -73,6 +74,11 @@ app.get('/group/:groupId/balance', (req, res) => {
 app.get('/group/:groupId/create-record/pay', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/pay.html'));
 });
+//我的帳戶頁面
+app.get('/account', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/account.html'));
+});
+
 
 //使用者 API
 app.use('/', userRoutes);
@@ -82,6 +88,8 @@ app.use('/', groupRoutes);
 app.use('/', expenseRoutes);
 //轉帳 API
 app.use('/', transferRoutes);
+//帳戶 API
+app.use('/', accountRoutes);
 
 
 app.use(get404Page);
@@ -93,9 +101,10 @@ const server = http.createServer(app);
 // 創建 Socket.IO 伺服器並綁定到 HTTP 伺服器上
 const io = new Server(server, {
   cors: {
-    origin: "https://splitmate.site", 
+    origin: "https://splitmate.site/", 
     methods: ["GET", "POST"]
-  }
+  },
+  connectionStateRecovery: {}
 });
 
 // 使用 Socket.IO 控制器來設置 Socket.IO 事件
