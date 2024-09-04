@@ -341,7 +341,7 @@ function initializeChat() {
   let counter = 0;
 
   // 初始化 Socket.IO 客戶端
-  const socket = io('http://localhost:3000/', {
+  const socket = io('https://splitmate.site/', {
     auth: {
       serverOffset: 0
     },
