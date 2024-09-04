@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
           window.location.href = '/groups';
           break;
         case 'payments':
-          // 跳轉到我的收款頁面
-          console.log('我的收款');
+          // 跳轉到我的帳戶頁面
+          window.location.href = '/account';
           break;
         case 'logout':
           // 執行登出操作，跳轉到登入頁面
