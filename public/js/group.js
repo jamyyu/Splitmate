@@ -338,12 +338,19 @@ function initializeChat() {
   const userId = userData.id;
   const userName = userData.name;
 
+  let counter = 0;
+
   // 初始化 Socket.IO 客戶端
-  const socket = io('wss://splitmate.site', {
+  const socket = io('https://splitmate.site/', {
+    auth: {
+      serverOffset: 0
+    },
     reconnection: true,
     reconnectionAttempts: Infinity,
     reconnectionDelay: 1000,
     timeout: 20000,
+    ackTimeout: 10000,
+    retries: 3
   });
 
   // 監聽 connect 事件，確保每次連接時都會自動加入群組
@@ -361,6 +368,10 @@ function initializeChat() {
 
   chatToggleBtn.addEventListener('click', function () {
     document.getElementById('chat-window').classList.toggle('show');
+    // 如果聊天窗口已顯示，滾動到底部
+    if (document.getElementById('chat-window').classList.contains('show')) {
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
   });
 
   closeChatBtn.addEventListener('click', function () {
@@ -381,8 +392,9 @@ function initializeChat() {
   function sendMessage() {
     const messageText = messageInput.value.trim();
     if (messageText) {
-      const messageData = { groupId, userId, userName, message: messageText };
-      socket.emit('sendMessage', messageData);
+      const clientOffset = `${socket.id}-${counter++}`;
+      const messageData = { groupId, userId, userName, content: messageText };
+      socket.emit('sendMessage', messageData, clientOffset);
       displayMessage(messageData, 'right');
       messageInput.value = '';
       chatBody.scrollTop = chatBody.scrollHeight;
@@ -390,35 +402,69 @@ function initializeChat() {
   }
 
   // 接收到新消息事件
-  socket.on('newMessage', (data) => {
+  socket.on('newMessage', (data) => { 
     if (data.userId !== userId) {
       displayMessage(data, 'left');
     }
   });
 
+  // 接收舊消息事件
+  socket.on('oldMessage', (data) => { 
+    if (data.userId !== userId) {
+      displayMessage(data, 'left');
+    } else {
+      displayMessage(data, 'right');
+    }
+  });
+
   // 動態顯示消息的函數
   function displayMessage(data, side) {
+    const messageContainer = document.createElement('div'); // 外層容器，用於包裹消息和時間
+    messageContainer.classList.add('message-container', `message-container-${side}`);
+  
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', `message-${side}`);
-
+  
     const contentDiv = document.createElement('div');
     contentDiv.classList.add('message-content');
-    contentDiv.textContent = data.message;
+    contentDiv.textContent = data.content;
     messageDiv.appendChild(contentDiv);
-
+  
+    // 將消息添加到外層容器
+    messageContainer.appendChild(messageDiv);
+  
+    // 新增時間和發送者顯示（不在消息框裡）
     const infoDiv = document.createElement('div');
     infoDiv.classList.add('message-info');
+  
     const senderSpan = document.createElement('span');
-    senderSpan.classList.add('message-sender');
+    senderSpan.classList.add(side === 'left' ? 'message-info-left' : 'message-info-right');
     senderSpan.textContent = side === 'left' ? data.userName : '你';
+  
     const timeSpan = document.createElement('span');
     timeSpan.classList.add('message-time');
-    timeSpan.textContent = new Date().toLocaleTimeString();
+    
+    const options = {
+      year: 'numeric', // 顯示完整年份
+      month: '2-digit', // 顯示兩位數的月份
+      day: '2-digit', // 顯示兩位數的日期
+      hour: '2-digit', // 顯示兩位數的小時，24 小時制
+      minute: '2-digit', // 顯示兩位數的分鐘
+      hour12: false // 使用 24 小時制
+    };
+    const messageTime = data.timestamp
+    ? new Date(new Date(data.timestamp).getTime() + 8 * 60 * 60 * 1000).toLocaleString('zh-TW', options) // 手動加上8小時
+    : new Date().toLocaleString('zh-TW', options); // 當前時間的台灣時間
+    timeSpan.textContent = messageTime;
+  
     infoDiv.appendChild(senderSpan);
     infoDiv.appendChild(timeSpan);
-
-    messageDiv.appendChild(infoDiv);
-    chatBody.appendChild(messageDiv);
+  
+    // 將時間和發送者顯示添加到外層容器
+    messageContainer.appendChild(infoDiv);
+  
+    // 將整個容器添加到聊天框
+    chatBody.appendChild(messageContainer);
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 }
