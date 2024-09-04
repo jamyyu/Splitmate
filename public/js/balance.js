@@ -103,10 +103,25 @@ function renderGroupBalanceData(groupBalanceData, payments, token){
     } else {
       balanceText = `-${mainCurrencySymbol}${Math.abs(balance).toLocaleString()}`;
     } 
-    memberName.textContent = memberText + '\u00A0' + balanceText;
+    memberName.textContent = memberText + '\u00A0' + balanceText + '\u00A0';
     
     memberInfo.appendChild(memberIcon);
     memberInfo.appendChild(memberName);
+
+    // 檢查 user_id，如果不為 null，添加 "查看帳戶" 按鈕
+    if (member.user_id !== null) {
+      const viewAccountButton = document.createElement('button');
+      viewAccountButton.className = 'view-account-btn';
+      viewAccountButton.textContent = '查看帳戶';
+      // 綁定 user_id 作為 data 屬性
+      viewAccountButton.setAttribute('data-user-id', member.user_id);
+      viewAccountButton.addEventListener('click', (e) => {
+        // 獲取按鈕上的 user_id
+        const userId = e.target.getAttribute('data-user-id');
+        fetchAccount(userId, token);
+      });
+      memberInfo.appendChild(viewAccountButton);
+    }
     balanceInfo.appendChild(memberInfo);
   })
   const divider = document.createElement('hr');
@@ -179,4 +194,69 @@ function clickBackBtn() {
     e.preventDefault(); // 防止預設行為
     window.location.href = `/group/${groupId}`;
   })
+}
+
+
+function fetchAccount(userId, token) {
+  fetch(`/api/account/${userId}`, {
+    method: "GET",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+  .then((response) => response.json())
+  .then((result) => {
+    renderAccount(result.accountsData);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  })
+}
+
+function renderAccount(accountData) {
+  // 檢查是否已存在彈框，避免重複創建
+  if (document.querySelector('.modal-overlay')) {
+    return;
+  }
+  // 創建彈框背景遮罩
+  const modalOverlay = document.createElement('div');
+  modalOverlay.className = 'modal-overlay';
+  // 創建彈框容器
+  const modalContainer = document.createElement('div');
+  modalContainer.className = 'modal-container';
+  // 創建帳戶信息容器
+  const accountInfo = document.createElement('div');
+  accountInfo.className = 'account-info';
+  // 檢查是否有帳戶資料
+  if (accountData.length === 0) {
+    const noDataMessage = document.createElement('div');
+    noDataMessage.className = 'no-data-message';
+    noDataMessage.textContent = '無帳戶資料';
+    accountInfo.appendChild(noDataMessage);
+  } else {
+    // 遍歷帳戶數據並顯示
+    accountData.forEach(account => {
+      const accountDetails = document.createElement('div');
+      accountDetails.className = 'account-details';
+      accountDetails.innerHTML = `
+        <div>銀行代碼: <span>${account.SWIFT}</span></div>
+        <div>銀行帳號: <span>${account.bankAccountNumber}</span></div>
+      `;
+      accountInfo.appendChild(accountDetails);
+    });
+  }
+  // 將帳戶信息添加到彈框容器
+  modalContainer.appendChild(accountInfo);
+  // 將彈框容器和背景遮罩添加到文檔中
+  document.body.appendChild(modalOverlay);
+  document.body.appendChild(modalContainer);
+  // 點擊彈框外部關閉彈框
+  modalOverlay.addEventListener('click', function () {
+    modalContainer.remove();
+    modalOverlay.remove();
+  });
+  // 點擊彈框內部不關閉彈框
+  modalContainer.addEventListener('click', function (event) {
+    event.stopPropagation();
+  });
 }
