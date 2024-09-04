@@ -175,6 +175,7 @@ export const getGroupBalance = async (groupId) => {
       SELECT 
         COALESCE(u.name, gmm.member_name) AS member,
         COALESCE(u.image_name, null) AS image,
+        gmm.user_id,
         gmm.splitgroup_id
       FROM 
         GroupMemberMapping gmm
@@ -254,6 +255,7 @@ export const getGroupBalance = async (groupId) => {
     SELECT 
       am.member,
       am.image,
+      am.user_id,
       COALESCE(ap.totalAmountPaid, 0) + COALESCE(tp.totalAmountPaid, 0) AS totalAmountPaid,
       COALESCE(atp.totalAmountToPay, 0) + COALESCE(tr.totalAmountReceived, 0) AS totalAmountToPay,
       (COALESCE(ap.totalAmountPaid, 0) + COALESCE(tp.totalAmountPaid, 0)) - 
