@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splitmate</title>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/account.css">
+    <script src="/js/header.js"></script>
+    <script src="/js/account.js"></script>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="/images/favicon-white.png" alt="Splitmate Logo">
+    </div>
+    <div class="page-title">我的帳戶</div>
+    <div class="user-info">
+      <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+      <div class="dropdown-menu" id="dropdown-menu">
+        <div class="menu-item" data-action="profile">個人檔案</div>
+        <div class="menu-item" data-action="groups">我的群組</div>
+        <div class="menu-item" data-action="payments">我的帳戶</div>
+        <div class="menu-item" data-action="logout">登出</div>
+      </div>
+    </div>
+  </header>
+  <main class="main-content">
+    <form id="account-form">
+      <!--
+      <div class="exist-account-container">
+        <div class="exist-account">銀行代碼：<span>000</span></div>
+        <div class="exist-account">銀行帳號：<span>123345</span></div>
+      </div>
+      -->
+      <div class="account-container">
+        <!--
+        <div class="account-inputs">
+          <input type="text" placeholder="銀行代碼" required pattern="[0-9]+" class="swift-code">
+          <input type="text" placeholder="帳號" required pattern="[0-9]+" class="bank-account">
+          <button class="remove-btn">×</button>
+        </div>
+        -->
+        <div class="add-account-container">
+          <div class="add-account" id="addAccountButton">+ 新增帳戶</div>
+        </div>
+      </div>
+      <div class="button-container">
+        <button type="submit" class="save-button">儲存</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
