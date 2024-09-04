@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Splitmate</title>
     <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/account.css">
     <script src="/js/header.js"></script>
-    <script src="/js/profile.js"></script>
+    <script src="/js/account.js"></script>
     <link rel="icon" href="/images/favicon.png" type="image/x-icon">
 </head>
 <body>
@@ -15,7 +15,7 @@
     <div class="logo">
       <img src="/images/favicon-white.png" alt="Splitmate Logo">
     </div>
-    <div class="page-title">個人檔案</div>
+    <div class="page-title">我的帳戶</div>
     <div class="user-info">
       <img src="/images/profile-icon.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
       <div class="dropdown-menu" id="dropdown-menu">
@@ -27,22 +27,29 @@
     </div>
   </header>
   <main class="main-content">
-    <div class="profile-container">
-      <form class="profile-form">
-        <div class="profile-picture">
-          <img src="/images/profile-icon.png"  alt="Profile Picture" id="profile-picture-preview" class="profile-picture-img">
-          <label for="profile-picture-upload" class="edit-button">
-            <img src="/images/edit-16.png" alt="Edit" class="edit-icon">
-          </label>
-          <input type="file" id="profile-picture-upload" name="profile_picture" style="display: none;" accept="image/*">
+    <form id="account-form">
+      <!--
+      <div class="exist-account-container">
+        <div class="exist-account">銀行代碼：<span>000</span></div>
+        <div class="exist-account">銀行帳號：<span>123345</span></div>
+      </div>
+      -->
+      <div class="account-container">
+        <!--
+        <div class="account-inputs">
+          <input type="text" placeholder="銀行代碼" required pattern="[0-9]+" class="swift-code">
+          <input type="text" placeholder="帳號" required pattern="[0-9]+" class="bank-account">
+          <button class="remove-btn">×</button>
         </div>
-        <div class="form-group">
-          <label for="name">姓名</label>
-          <input type="text" id="name" name="name" required>
+        -->
+        <div class="add-account-container">
+          <div class="add-account" id="addAccountButton">+ 新增帳戶</div>
         </div>
+      </div>
+      <div class="button-container">
         <button type="submit" class="save-button">儲存</button>
-      </form>
-    </div>
+      </div>
+    </form>
   </main>
 </body>
 </html>
