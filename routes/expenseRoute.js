@@ -11,15 +11,15 @@ const upload = multer({ storage: storage });
 
 router.get('/api/expense/exchange-rate', getExchangeRate);
 
-router.post('/api/expense',upload.single('image'), uploadExpenseData)
+router.post('/api/expense',upload.single('image'), uploadExpenseData);
 
-router.get('/api/expense/:groupId/balance', getGroupBalanceData)
+router.get('/api/expense/:groupId/balance', getGroupBalanceData);
 
-router.get('/api/expense/:groupId/:expenseId', getExpenseData)
+router.get('/api/expense/:groupId/:expenseId', getExpenseData);
 
-router.delete('/api/expense/:groupId/:expenseId', deleteExpenseData)
+router.delete('/api/expense/:groupId/:expenseId', deleteExpenseData);
 
-router.get('/api/expense/:groupId', getAllRecordData)
+router.get('/api/expense/:groupId', getAllRecordData);
 
 
 
