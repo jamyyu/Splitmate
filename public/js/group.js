@@ -341,7 +341,7 @@ function initializeChat() {
   let counter = 0;
 
   // 初始化 Socket.IO 客戶端
-  const socket = io('https://splitmate.site/', {
+  const socket = io('http://localhost:3000/', {
     auth: {
       serverOffset: 0
     },
@@ -444,17 +444,10 @@ function initializeChat() {
     const timeSpan = document.createElement('span');
     timeSpan.classList.add('message-time');
     
-    const options = {
-      year: 'numeric', // 顯示完整年份
-      month: '2-digit', // 顯示兩位數的月份
-      day: '2-digit', // 顯示兩位數的日期
-      hour: '2-digit', // 顯示兩位數的小時，24 小時制
-      minute: '2-digit', // 顯示兩位數的分鐘
-      hour12: false // 使用 24 小時制
-    };
+    console.log(data.timestamp);
     const messageTime = data.timestamp
-    ? new Date(new Date(data.timestamp).getTime() + 8 * 60 * 60 * 1000).toLocaleString('zh-TW', options) // 手動加上8小時
-    : new Date().toLocaleString('zh-TW', options); // 當前時間的台灣時間
+    ? moment.utc(data.timestamp).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm') // 將 UTC 時間轉換為台灣時間
+    : moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm'); // 使用當前時間（台灣時間）作為備用
     timeSpan.textContent = messageTime;
   
     infoDiv.appendChild(senderSpan);
