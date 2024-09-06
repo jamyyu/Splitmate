@@ -133,6 +133,7 @@ function renderCurrentData(recordData) {
   }
   memberData.forEach(member => {
     if (member.role === 'admin'){
+      const admin = document.querySelector('.member');
       const token = localStorage.getItem('token');
       userData = parseJwt(token);
       const memberName = document.querySelector('.member-name');
@@ -140,6 +141,12 @@ function renderCurrentData(recordData) {
       const memberEmailSpan = document.createElement('span');
       memberEmailSpan.textContent = ` (${userData['email']})`;
       memberName.appendChild(memberEmailSpan);
+      // 原本的ID隱藏式存起來
+      const memberIdInput = document.createElement('input');
+      memberIdInput.type = 'hidden';
+      memberIdInput.value = member.member_id;
+      memberIdInput.className = 'admin';
+      admin.appendChild(memberIdInput);  
     }
     if (member.role === 'member'){
       // 創建包含輸入字段和刪除按鈕的 div
@@ -223,7 +230,7 @@ function handleUpdate() {
     // 獲取群組成員
     const token = localStorage.getItem('token');
     const userData = parseJwt(token);
-    let memberId = userData['id'];
+    let memberId = document.querySelector('.admin').value;
     let name = userData['name'];
     let email = userData['email'];
     const members = [{memberId, name, email}];
