@@ -341,7 +341,7 @@ function initializeChat() {
   let counter = 0;
 
   // 初始化 Socket.IO 客戶端
-  const socket = io('https://splitmate.site/', {
+  const socket = io('http://localhost:3000/', {
     auth: {
       serverOffset: 0
     },
@@ -444,7 +444,6 @@ function initializeChat() {
     const timeSpan = document.createElement('span');
     timeSpan.classList.add('message-time');
     
-    console.log(data.timestamp);
     const messageTime = data.timestamp
     ? moment.utc(data.timestamp).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm') // 將 UTC 時間轉換為台灣時間
     : moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm'); // 使用當前時間（台灣時間）作為備用

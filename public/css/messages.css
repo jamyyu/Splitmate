@@ -125,6 +125,19 @@
   border-radius: 5px;
 }
 
+.unread-count {
+  background-color: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 1px 4px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+}
+
 
 @media (max-width: 700px) {
   .chat-window {
