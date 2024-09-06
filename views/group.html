@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/messages.css">    
     <script src="/js/header.js"></script>
     <script src="/js/group.js" defer></script>
+    <script src="/js/push-notifications.js" defer></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
@@ -37,6 +38,7 @@
         <img class="activity-image" id="group-image">
         <button class="chat-btn" id="chat-toggle-btn">
           <img src="/images/chat.png">
+          <span class="unread-count" id="unread-count">0</span>
         </button>
         <!-- 生成編輯或查看按鈕-->
         <button class="settlement-btn">結餘</button>
