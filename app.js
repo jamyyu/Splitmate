@@ -9,6 +9,7 @@ import expenseRoutes from './routes/expenseRoute.js';
 import transferRoutes from './routes/transferRoute.js';
 import accountRoutes from './routes/accountRoute.js';
 import notificationRoutes from './routes/notificationRoute.js';
+import googleRoutes from './routes/googleRoute.js';
 import { get404Page } from './controllers/error.js';
 import { setupSocketIO } from './controllers/socketController.js'
 import { Server } from 'socket.io';
@@ -92,7 +93,9 @@ app.use('/', transferRoutes);
 //帳戶 API
 app.use('/', accountRoutes);
 //通知 API
-app.use('/',notificationRoutes);
+app.use('/', notificationRoutes);
+//google API
+app.use('/', googleRoutes);
 
 
 app.use(get404Page);
@@ -104,7 +107,7 @@ const server = http.createServer(app);
 // 創建 Socket.IO 伺服器並綁定到 HTTP 伺服器上
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000/", 
+    origin: "'https://splitmate.site/'", 
     methods: ["GET", "POST"]
   },
   connectionStateRecovery: {}
