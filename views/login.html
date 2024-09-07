@@ -6,7 +6,38 @@
   <title>Splitmate</title>
   <link rel="stylesheet" href="/css/login.css">
   <script src="/js/login.js" defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+  <script>
+    // 定義回調函數來處理憑證回應
+    function handleCredentialResponse(response) {
+      const id_token = response.credential; // 獲取 ID Token
+      console.log("ID Token: " + id_token);
+
+      // 將 ID Token 發送到後端進行驗證
+      fetch('/api/google/auth', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id_token }),
+      })
+      .then(response => response.json())
+      .then(result => {
+        const token = result.token;
+        if (token) {
+          console.log('Login successful:', result);
+          localStorage.setItem('token', token);
+          window.location.href = '/groups';
+        } else {
+          throw result;
+        }
+      })
+      .catch((error) => {
+          console.error('Error during login:', error);
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -36,6 +67,21 @@
       <input type="password" id="sign-in-password" placeholder="密碼" required>
       <div id="sign-in-response" class="sign-in-font hide">電子郵件或密碼錯誤</div>
       <button type="submit" id="sign-in-button">登入</button>
+      <div id="g_id_onload"
+        data-client_id="558478356426-afvs752nbs0raleqrvtn2r6og8ke1ben.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse"
+        data-ux_mode="popup"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+          data-type="standard"
+          data-width="280"
+          data-size="large"
+          data-theme="outline"
+          data-text="sign_in_with"
+          data-shape="rectangular"
+          data-logo_alignment="left">
+      </div>
     </form>
     <form id="sign-up-form">
       <input type="text" id="sign-up-name" placeholder="姓名" required>

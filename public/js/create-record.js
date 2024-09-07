@@ -542,7 +542,7 @@ function clickSubmitBtn() {
         // 成功處理後的操作
         alert('紀錄已成功新增');
         // 在成功提交後發送推播通知
-        await sendNotification(groupId, `${userData.name}增加一筆新的${currentForm === 'expense' ? '費用' : '轉帳'}紀錄！`);
+        await sendNotification(groupId, groupData.name, `${userData.name}增加一筆${currentForm === 'expense' ? '費用' : '轉帳'}紀錄！`);
         window.location.href = `/group/${groupId}`; 
       } else {
         // 顯示錯誤信息
@@ -558,7 +558,7 @@ function clickSubmitBtn() {
 }
 
 // 發送推播通知的函數
-async function sendNotification(groupId, message) {
+async function sendNotification(groupId, groupName, message) {
   try {
     const response = await fetch('/api/create-record', {
       method: 'POST',
@@ -568,7 +568,7 @@ async function sendNotification(groupId, message) {
       body: JSON.stringify({ 
         groupId, 
         message: { 
-          title: 'Splitmate',
+          title: groupName,
           body: message
         }
       })
