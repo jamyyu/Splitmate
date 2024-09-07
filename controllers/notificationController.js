@@ -8,7 +8,6 @@ const publicKey = process.env.PUBLIC_KEY;
 const privateKey = process.env.PRIVATE_KEY;
 
 
-
 // 設置 VAPID 詳細信息
 const vapidKeys = {
   publicKey:  publicKey,
@@ -21,7 +20,7 @@ webpush.setVapidDetails(
   vapidKeys.privateKey
 );
 
-// 保存訂閱信息的控制器
+// 保存訂閱信息
 export const saveSubscription = (req, res) => {
   const { subscription, groupId } = req.body; // 獲取訂閱信息和群組 ID
   addSubscription(subscription, groupId); // 添加訂閱並關聯群組
@@ -29,13 +28,13 @@ export const saveSubscription = (req, res) => {
   res.status(201).json({ message: 'Subscription saved successfully.' });
 };
 
-// 發送推播通知的控制器
+// 發送推播通知
 export const sendNotification = (req, res) => {
   console.log('收到發送通知的請求:', req.body);
   const { groupId, message } = req.body; // 獲取群組 ID 和消息內容
   const data = JSON.stringify({ 
-    title: message.title || '新通知', 
-    body: message.body || '你有一筆新的記錄！' 
+    title: message.title, 
+    body: message.body
   });
   console.log('推送數據:', data);
   const subscriptions = getSubscriptionsByGroup(groupId); // 獲取特定群組的所有訂閱

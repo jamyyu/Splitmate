@@ -88,7 +88,7 @@ export const getTransferData = async (req, res) => {
 
     // 使用 reduce 來整理數據
     const transferData = results.reduce((acc, result) => {
-      // 檢查當前的 transfer_id 是否已存在於累積數組中
+      // 檢查當前的 transfer_id 是否已存在於acc中
       let transfer = acc.find(t => t.transfer_id === result.transfer_id);
 
       if (!transfer) {
@@ -104,14 +104,11 @@ export const getTransferData = async (req, res) => {
           note: result.note,
           image_name: result.image_name,
           updated_at: result.updated_at,
-          transferFrom: [], // 初始化轉出成員數組
-          transferTo: [] // 初始化轉入成員數組
+          transferFrom: [], 
+          transferTo: []
         };
-
-        // 將新轉帳推入累積數組
         acc.push(transfer);
       }
-
       // 將當前轉出成員的數據添加到 transferFrom 中
       transfer.transferFrom.push({
         transferFrom_name: result.transferFrom_name,
@@ -129,9 +126,8 @@ export const getTransferData = async (req, res) => {
         transferTo_amount: removeTrailingZeros(result.transferTo_amount),
         transferTo_main_currency_amount: removeTrailingZeros(result.transferTo_main_currency_amount)
       });
-
       return acc;
-    }, []); // 初始值為空數組
+    }, []); 
 
     res.status(200).json({ transferData });
   } catch (error) {

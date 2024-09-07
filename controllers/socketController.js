@@ -41,7 +41,7 @@ export function setupSocketIO(io) {
         callback();
       } catch (error) {
         console.error('Failed to store message:', error);
-        // 通知前端用戶發送失敗
+        // 通知前端發送失敗
         socket.emit('chat message error', { error: 'Failed to store message in the database.'});
         return;
       }

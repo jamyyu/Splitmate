@@ -54,7 +54,7 @@ export class Database {
           throw error;
         }
 
-        // 在下一次重試之前，等待一段時間（比如 1 秒）
+        // 在下一次重試之前，等待一段時間
         await new Promise(resolve => setTimeout(resolve, 1000));
       } finally {
         if (connection) connection.release();
@@ -65,14 +65,14 @@ export class Database {
   static async beginTransaction() {
     const connection = await pool.getConnection();
     await connection.beginTransaction();
-    return connection; // 返回此連接以便在後續操作中使用
+    return connection;
   }
 
   static async commitTransaction(connection) {
     try {
       await connection.commit();
     } finally {
-      connection.release(); // 事務提交後，釋放連接
+      connection.release();
     }
   }
 
@@ -80,7 +80,7 @@ export class Database {
     try {
       await connection.rollback();
     } finally {
-      connection.release(); // 事務回滾後，釋放連接
+      connection.release();
     }
   }
 }

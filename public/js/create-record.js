@@ -6,16 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Service Worker registered with scope:', registration.scope);
         if (registration.active) {
           console.log('Service Worker is already active.');
-          subscribeUserToPush(registration); // Service Worker 已經就緒，立即嘗試訂閱
+          subscribeUserToPush(registration); // Service Worker ok，立即嘗試訂閱
         } else {
-          // 如果 Service Worker 尚未激活，添加事件監聽器來等待它的激活
+          // 如果 Service Worker 尚未 active，添加事件監聽器等待
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'activated') {
                   console.log('Service Worker is activated.');
-                  subscribeUserToPush(registration); // Service Worker 激活後嘗試訂閱
+                  subscribeUserToPush(registration); // Service Worker active 後嘗試訂閱
                 }
               });
             }
@@ -249,7 +249,7 @@ async function createExchangeRateDiv(currency) {
   mainCurrencyAmountValue.classList.add('text-input');
   const groupData = JSON.parse(sessionStorage.getItem('groupData'));
   const mainCurrency = groupData.main_currency;
-  mainCurrencyAmountValue.placeholder = `${mainCurrency} 金額`;  // 這裡可以根據實際情況計算和設置
+  mainCurrencyAmountValue.placeholder = `${mainCurrency} 金額`;
   mainCurrencyAmountValue.readOnly = true; // 設置為 readonly
   mainCurrencyAmountDiv.appendChild(mainCurrencyAmountValue);
   // 將 exchangeRateDiv 和 mainCurrencyAmountDiv 添加到 formGroupInline 中
@@ -384,7 +384,7 @@ function clickCancelBtn() {
   const groupData = JSON.parse(sessionStorage.getItem('groupData'));
   const groupId = groupData.id;
   CancelBtn.addEventListener('click',(e) => {
-    e.preventDefault(); // 防止預設行為
+    e.preventDefault();
     window.location.href = `/group/${groupId}`;
   })
 }
@@ -412,7 +412,7 @@ function clickSubmitBtn() {
   });
 
   expenseForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // 防止表單的預設提交行為
+    e.preventDefault(); 
     // 禁用提交按鈕，防止重複提交
     submitBtn.disabled = true;
     // 獲取數據

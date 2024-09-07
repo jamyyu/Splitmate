@@ -1,4 +1,3 @@
-// 模擬數據庫的訂閱信息數組
 const subscriptions = [];
 
 // 添加新的訂閱
