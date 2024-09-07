@@ -44,19 +44,18 @@
   background-color: #ffffff;
 }
 
-/* 訊息外層容器樣式 */
 .message-container {
   display: flex;
-  flex-direction: column; /* 垂直排列消息和時間 */
-  margin-bottom: 10px; /* 添加一些下間距 */
+  flex-direction: column;
+  margin-bottom: 10px; 
 }
 
 .message-container-left {
-  align-items: flex-start; /* 左側消息靠左顯示 */
+  align-items: flex-start;
 }
 
 .message-container-right {
-  align-items: flex-end; /* 右側消息靠右顯示 */
+  align-items: flex-end;
 }
 
 .message {
@@ -85,11 +84,11 @@
 
 /* 訊息的時間和發送者顯示樣式 */
 .message-info {
-  font-size: 0.8em; /* 設置較小的字體大小 */
-  color: gray; /* 使用灰色字體顏色 */
-  margin-top: 2px; /* 添加一點上間距 */
+  font-size: 0.8em;
+  color: gray;
+  margin-top: 2px;
   display: flex;
-  gap: 5px; /* 發送者名稱和時間之間的間距 */
+  gap: 5px;
 }
 
 .message-info-left {
@@ -141,9 +140,9 @@
 
 @media (max-width: 700px) {
   .chat-window {
-    width: 90%; /* 使聊天室寬度為視窗的90% */
+    width: 90%;
     left: 50%;
-    right: auto; /* 清除右側定位 */
+    right: auto;
     transform: translateX(-50%); /* 水平置中 */
   }
 }

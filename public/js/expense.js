@@ -156,7 +156,7 @@ function clickCancelBtn() {
   const groupData = JSON.parse(sessionStorage.getItem('groupData'));
   const groupId = groupData.id;
   CancelBtn.addEventListener('click',(e) => {
-    e.preventDefault(); // 防止預設行為
+    e.preventDefault(); 
     window.location.href = `/group/${groupId}`;
   })
 }
@@ -165,7 +165,7 @@ function clickCancelBtn() {
 function clickDeleteBtn() {
   const deleteBtn = document.querySelector('.delete-button');
   deleteBtn.addEventListener('click',(e) => {
-    e.preventDefault(); // 防止預設行為
+    e.preventDefault();
     const confirmed = confirm('確定要刪除這筆花費嗎？');
     if (!confirmed) {
       return; // 如果用戶點擊“取消”，則不刪除

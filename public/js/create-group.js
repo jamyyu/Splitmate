@@ -197,7 +197,7 @@ function handleSubmit() {
 function clickCancelBtn() {
   const CancelBtn = document.querySelector('.cancel-button');
   CancelBtn.addEventListener('click',(e) => {
-    e.preventDefault(); // 防止預設行為
+    e.preventDefault();
     window.location.href = `/groups`;
   })
 }

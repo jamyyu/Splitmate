@@ -110,10 +110,8 @@ export const getAllRecordData = async (req, res) => {
       if (!acc[curr.date]) {
         acc[curr.date] = [];
       }
-
       // 檢查是否已經存在該 record_id
       let existingRecord = acc[curr.date].find(record => record.record_id === curr.record_id);
-
       if (!existingRecord) {
         // 如果不存在該 record_id，則新增一個紀錄物件
         existingRecord = {
@@ -138,7 +136,6 @@ export const getAllRecordData = async (req, res) => {
         };
         acc[curr.date].push(existingRecord);
       }
-
       // 將 member 資料添加到現有的紀錄中
       existingRecord.members.push({
         member_id: curr.member_id,
@@ -146,7 +143,6 @@ export const getAllRecordData = async (req, res) => {
         member_amount: removeTrailingZeros(curr.member_amount),
         member_main_currency_amount: removeTrailingZeros(curr.member_main_currency_amount)
       });
-    
       return acc;
     }, {});
   
@@ -200,12 +196,10 @@ export const getExpenseData = async (req, res) => {
     const groupId = req.params.groupId;
     const expenseId = req.params.expenseId;
     let results = await getExpense(groupId, expenseId);
-
     // 使用 reduce 來整理數據
     const expenseData = results.reduce((acc, result) => {
       // 查找是否已存在相同 expense_id 的支出
       let expense = acc.find(exp => exp.expense_id === result.expense_id);
-
       if (!expense) {
         // 如果還沒有這筆支出，創建新的一筆支出
         expense = {
@@ -228,11 +222,8 @@ export const getExpenseData = async (req, res) => {
           paid_main_currency_amount: removeTrailingZeros(result.paid_main_currency_amount),
           members: [] // 初始化成員數組
         };
-
-        // 將新支出推入累積數組
         acc.push(expense);
       }
-
       // 將當前成員的數據添加到支出的 members 中
       expense.members.push({
         member_name: result.member_name,
@@ -241,7 +232,6 @@ export const getExpenseData = async (req, res) => {
         member_amount: removeTrailingZeros(result.member_amount),
         member_main_currency_amount: removeTrailingZeros(result.member_main_currency_amount)
       });
-
       return acc;
     }, []); // 初始值為空數組
     res.status(200).json({ expenseData: expenseData });
@@ -296,12 +286,10 @@ export const getGroupBalanceData = async (req, res) => {
     const payments = [];
     let x = 0;
     let y = sortedBalanceData.length - 1;
-
     while (x < y) {
       const payer = sortedBalanceData[x];
       const receiver = sortedBalanceData[y];
-      const paymentAmount = Math.min(-payer.balance, receiver.balance);
-      
+      const paymentAmount = Math.min(-payer.balance, receiver.balance); 
       if (paymentAmount !==0){
         payments.push({
           from: payer.member,
@@ -311,10 +299,8 @@ export const getGroupBalanceData = async (req, res) => {
           amount: removeTrailingZeros(paymentAmount)
         });
       }
-
       payer.balance += paymentAmount;
       receiver.balance -= paymentAmount;
-
       if (payer.balance === 0) {
         x++;
       }

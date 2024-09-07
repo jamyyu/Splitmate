@@ -218,13 +218,10 @@ function renderAccount(accountData) {
   if (document.querySelector('.modal-overlay')) {
     return;
   }
-  // 創建彈框背景遮罩
   const modalOverlay = document.createElement('div');
   modalOverlay.className = 'modal-overlay';
-  // 創建彈框容器
   const modalContainer = document.createElement('div');
   modalContainer.className = 'modal-container';
-  // 創建帳戶信息容器
   const accountInfo = document.createElement('div');
   accountInfo.className = 'account-info';
   // 檢查是否有帳戶資料
@@ -234,7 +231,6 @@ function renderAccount(accountData) {
     noDataMessage.textContent = '無帳戶資料';
     accountInfo.appendChild(noDataMessage);
   } else {
-    // 遍歷帳戶數據並顯示
     accountData.forEach(account => {
       const accountDetails = document.createElement('div');
       accountDetails.className = 'account-details';
@@ -245,9 +241,7 @@ function renderAccount(accountData) {
       accountInfo.appendChild(accountDetails);
     });
   }
-  // 將帳戶信息添加到彈框容器
   modalContainer.appendChild(accountInfo);
-  // 將彈框容器和背景遮罩添加到文檔中
   document.body.appendChild(modalOverlay);
   document.body.appendChild(modalContainer);
   // 點擊彈框外部關閉彈框

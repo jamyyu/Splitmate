@@ -201,7 +201,6 @@ export const updateGroupData = async(req, res) => {
         return res.status(400).json({ error: true, message: `${member.name} 的電子郵件格式錯誤` });
       }
     }
-    // 開始事務
     //connection = await Database.beginTransaction();
     // 圖片更新
     let oldImageName = currentGroupData.image_name;
@@ -266,7 +265,7 @@ export const updateGroupData = async(req, res) => {
     res.status(200).json({ ok: true });
   } catch (error) {
     //if (connection) {
-      //await connection.rollback(); // 回滾事務並確保 connection 已定義
+      //await connection.rollback(); 
     //}
     console.error('更新群組資料時出錯:', error);
     res.status(500).json({ error: true, message: 'Internal Server Error' });

@@ -15,7 +15,7 @@
   grid-auto-rows: 180px;
   gap: 20px;
   width: 100%;
-  max-width: 700px; /* 可以根據需要設置最大寬度 */
+  max-width: 700px;
   flex: 1;
   padding: 20px 0;
   box-sizing: border-box;

@@ -46,7 +46,7 @@
 }
 
 .swift-code{
-  flex: 0 0 120px; /* 設定銀行代碼的寬度固定為120px */
+  flex: 0 0 120px;
   padding: 10px;
   margin: 5px;
   border: 1px solid #ccc;

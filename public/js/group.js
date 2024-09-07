@@ -446,7 +446,7 @@ function initializeChat() {
     
     const messageTime = data.timestamp
     ? moment.utc(data.timestamp).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm') // 將 UTC 時間轉換為台灣時間
-    : moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm'); // 使用當前時間（台灣時間）作為備用
+    : moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm');
     timeSpan.textContent = messageTime;
   
     infoDiv.appendChild(senderSpan);
