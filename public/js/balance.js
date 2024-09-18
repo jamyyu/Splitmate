@@ -108,11 +108,11 @@ function renderGroupBalanceData(groupBalanceData, payments, token){
     memberInfo.appendChild(memberIcon);
     memberInfo.appendChild(memberName);
 
-    // 檢查 user_id，如果不為 null，添加 "查看帳戶" 按鈕
+    // 檢查 user_id，如果不為 null，添加 "查看收款帳戶" 按鈕
     if (member.user_id !== null) {
       const viewAccountButton = document.createElement('button');
       viewAccountButton.className = 'view-account-btn';
-      viewAccountButton.textContent = '查看帳戶';
+      viewAccountButton.textContent = '查看收款帳戶';
       // 綁定 user_id 作為 data 屬性
       viewAccountButton.setAttribute('data-user-id', member.user_id);
       viewAccountButton.addEventListener('click', (e) => {
@@ -124,9 +124,25 @@ function renderGroupBalanceData(groupBalanceData, payments, token){
     }
     balanceInfo.appendChild(memberInfo);
   })
+  const balanceInfoDescription = document.createElement('div');
+  balanceInfoDescription.className = 'balance-info-description';
+  balanceInfoDescription.textContent = '此列表顯示每人總共欠款多少、需拿回多少。';
+  balanceInfo.appendChild(balanceInfoDescription);
+
   const divider = document.createElement('hr');
   divider.className = 'divider';
   balanceInfo.appendChild(divider);
+  if (payments.length > 0){
+    const checkoutTitle = document.createElement('div');
+    checkoutTitle.className = 'checkout-title';
+    checkoutTitle.textContent = '結帳 (最少轉帳次數)';
+    balanceInfo.appendChild(checkoutTitle);
+  
+    const checkoutSubtitle = document.createElement('div');
+    checkoutSubtitle.className = 'checkout-subtitle';
+    checkoutSubtitle.textContent = '若新增/刪除紀錄則會重新計算';
+    balanceInfo.appendChild(checkoutSubtitle);
+  }
 
   payments.forEach(payment => {
     const paymentContainer = document.createElement('div');
