@@ -11,3 +11,6 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 - **Real-Time Notifications**: Notify members in real-time when new expenses are added.
 - **Minimal Transaction Settlement**: Provides suggestions for minimal transfers to clear balances.
 
+## Demo
+
+(https://github.com/jamyyu/wehelp_stage1/issues/5#issue-2533630541)
