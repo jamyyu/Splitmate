@@ -8,4 +8,4 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 - **Expense Splitting**: Automatically calculates each member's balance.
 - **Real-Time Notifications**: Notify members in real-time when new expenses are added.
 - **Minimal Transaction Settlement**: Provides suggestions for minimal transfers to clear balances.
-- **Currency Support**: Supports multiple currencies for expense splitting.
+- **Currency Support**: Allows users to split expenses in multiple currencies, with automatic conversion to a group's primary currency for settlement.
