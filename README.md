@@ -24,6 +24,13 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 - Real-Time group chat.
  <img src="https://github.com/user-attachments/assets/4d2bbd23-09a5-4d67-9678-abc2237741b7" width="600" />
 
-## Backend Technique
+## Tech Stack
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Node.js, Express
+- **Database**: MySQL
+- **Authentication**: JWT
+- **Deployment**: Docker, Nginx
+- **Version Control**: Git, GitHub
+
 
 ## Server Architecture
