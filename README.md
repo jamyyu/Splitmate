@@ -17,3 +17,6 @@ Splitmate is a web-based bill-splitting application designed to help users effic
  
 - Create and manage groups.
  <img src="https://github.com/user-attachments/assets/20eb0719-8412-4280-8ce6-5175800c618e" width="600" />
+
+- Add expense or transfer records, view record details, and check balance.
+<img src="https://github.com/user-attachments/assets/118b760a-75e3-49bc-9f98-acc3bdfdcfb8" width="600" />
