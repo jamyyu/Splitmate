@@ -12,5 +12,5 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 - **Minimal Transaction Settlement**: Provides suggestions for minimal transfers to clear balances.
 
 ## Demo
-- **Member System**: Sign up with an email account or log in using Google.
+Sign up with an email account or log in using Google.
 <img src="https://github.com/user-attachments/assets/d61afe97-92fc-4063-9c6f-0e73b4fccb09" width="500" />
