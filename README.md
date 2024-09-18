@@ -1,6 +1,6 @@
 # [Splitmate](https://splitmate.site/)
 
-SplitMate is a web-based bill-splitting application designed to help users efficiently manage shared expenses in groups and provide real-time settlement advice with minimal transactions.
+Splitmate is a web-based bill-splitting application designed to help users efficiently manage shared expenses in groups and provide settlement advice with minimal transfers.
 
 ## Features
 
