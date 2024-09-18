@@ -14,3 +14,4 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 ## Demo
 - Sign up with an email account or log in using Google.
  <img src="https://github.com/user-attachments/assets/d61afe97-92fc-4063-9c6f-0e73b4fccb09" width="500" />
+![qide2-atcpi](https://github.com/user-attachments/assets/50a56f7d-85bb-4f55-b3c1-5885c14a6016)
