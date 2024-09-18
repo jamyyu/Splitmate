@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
+  // 自動填入測試用帳號和密碼
+  document.getElementById('sign-in-email').value = 'testuser@example.com';
+  document.getElementById('sign-in-password').value = 'testpassword';
   clickToggleForms();
   signUp();
   signIn();
@@ -11,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
   showLoginButton.addEventListener('click', function(event) {
     loginContainer.classList.remove('hide'); // 顯示登入/註冊表單
     overlay.classList.remove('hide'); // 顯示遮罩層
-    event.stopPropagation(); // 阻止事件冒泡
+    event.stopPropagation();
   });
 
   // 點擊遮罩層或表單外部時隱藏登入/註冊表單和遮罩層
@@ -24,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // 阻止點擊登入/註冊表單本身時關閉表單
   loginContainer.addEventListener('click', function(event) {
-    event.stopPropagation(); // 阻止事件冒泡
+    event.stopPropagation();
   });
 });
 
@@ -40,6 +43,9 @@ function clickToggleForms() {
 
   // 點擊登入按鈕
   signInButton.addEventListener('click', function() {
+    // 自動填入測試用帳號和密碼
+    document.getElementById('sign-in-email').value = 'testuser@example.com';
+    document.getElementById('sign-in-password').value = 'testpassword';
     signInForm.style.display = 'block';
     signUpForm.style.display = 'none';
     signInButton.classList.add('active');
@@ -48,6 +54,9 @@ function clickToggleForms() {
 
   // 點擊註冊按鈕
   signUpButton.addEventListener('click', function() {
+    // 清空登入表單的值
+    document.getElementById('sign-up-email').value = '';
+    document.getElementById('sign-up-password').value = '';
     signInForm.style.display = 'none';
     signUpForm.style.display = 'block';
     signUpButton.classList.add('active');
@@ -82,7 +91,7 @@ function signUp() {
       signUpResponse.classList.remove('hide');
       setTimeout(() => {
         signUpResponse.classList.add('hide');
-      }, 2000); // 2秒後隱藏
+      }, 2000);
     })
     .catch(error => {
       console.error('Error', error);
@@ -99,7 +108,7 @@ function signUp() {
       signUpResponse.classList.remove('hide');
       setTimeout(() => {
         signUpResponse.classList.add('hide');
-      }, 2000); // 2秒後隱藏
+      }, 2000);
     });
   });
 }
@@ -137,7 +146,7 @@ function signIn() {
         signInResponse.classList.remove('hide');
         setTimeout(() => {
           signInResponse.classList.add('hide');
-        }, 2000); // 2秒後隱藏
+        }, 2000);
       }
     });
   });
