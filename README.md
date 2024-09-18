@@ -44,3 +44,6 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 ## Database Schema
 <img src="https://github.com/user-attachments/assets/d951f5ed-c715-4a71-91dc-83b26a2909d1" width="600" />
 
+## Contact
+👩🏻‍💻 游如婕 Jamy Yu
+📬 Email: jamy11212@gmail.com
