@@ -38,3 +38,4 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 
 
 ## Server Architecture
+![image](https://github.com/user-attachments/assets/6fc0d0a6-f922-4f6d-8e33-5e99561b874d)
