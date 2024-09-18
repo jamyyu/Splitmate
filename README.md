@@ -2,7 +2,7 @@
 
 Splitmate is a web-based bill-splitting application designed to help users efficiently manage shared expenses in groups and provide settlement advice with minimal transfers.
 
-## Features
+## Core Features
 
 - **Group Management**: Create and manage groups, add/remove members.
 - **Expense Splitting**: Automatically calculates each member's balance.
@@ -12,5 +12,5 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 - **Minimal Transaction Settlement**: Provides suggestions for minimal transfers to clear balances.
 
 ## Demo
-
+- **Member System**: Sign up with an email account or log in using Google.
 ![e5ro9-49bju](https://github.com/user-attachments/assets/d61afe97-92fc-4063-9c6f-0e73b4fccb09)
