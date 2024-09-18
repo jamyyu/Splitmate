@@ -31,6 +31,7 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 - **Authentication**: JWT
 - **Deployment**: Docker, Nginx
 - **Version Control**: Git, GitHub
+- **Real-Time Communication**: Socket.IO
 
 
 ## Server Architecture
