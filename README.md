@@ -40,6 +40,6 @@ Splitmate is a web-based bill-splitting application designed to help users effic
 ## Server Architecture
 <img src="https://github.com/user-attachments/assets/6fc0d0a6-f922-4f6d-8e33-5e99561b874d" width="600" />
 
-
+## Database Schema
 <img src="https://github.com/user-attachments/assets/d951f5ed-c715-4a71-91dc-83b26a2909d1" width="600" />
 
