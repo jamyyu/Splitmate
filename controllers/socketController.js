@@ -1,5 +1,7 @@
 import { storeMessages, getMessages } from '../models/messagesModel.js';
 
+const processedMessages = new Set(); // 用於儲存已處理的 clientOffset
+
 export function setupSocketIO(io) {
   io.on('connection', async (socket) => {
     console.log('新用戶已連接: ' + socket.id);
@@ -33,6 +35,12 @@ export function setupSocketIO(io) {
     // 處理收到的消息
     socket.on('sendMessage', async (data, clientOffset) => {
       const { groupId, userId, userName, content } = data;
+      // 檢查是否已處理過這個 clientOffset，如果是則跳過
+      if (processedMessages.has(clientOffset)) {
+        return;
+      }
+      // 將 clientOffset 添加到已處理的 Set 中
+      processedMessages.add(clientOffset);
       io.to(`group_${groupId}`).emit('newMessage', data);
       // 儲存消息
       storeMessages(groupId, userId, clientOffset, content)
@@ -41,6 +49,10 @@ export function setupSocketIO(io) {
         // 通知客戶端儲存失敗，可以選擇顯示一個提示
         socket.emit('chat message error', { error: '儲存消息到資料庫時失敗。' });
       });
+      // 設置過期時間來清除已處理的 clientOffset
+      setTimeout(() => {
+        processedMessages.delete(clientOffset);
+      }, 60000);
     });
 
     // 處理用戶斷開連接
