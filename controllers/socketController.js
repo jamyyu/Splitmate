@@ -35,14 +35,14 @@ export function setupSocketIO(io) {
       const { groupId, userId, userName, content } = data;
       io.to(`group_${groupId}`).emit('newMessage', data);
       // 儲存消息
-      process.nextTick(async () => {
-        try {
-          const id = await storeMessages(groupId, userId, clientOffset, content);
-          if (callback) callback(); // 執行回調函數
-        } catch (error) {
-          console.error('儲存消息失敗:', error);
-          socket.emit('chat message error', { error: '儲存消息到資料庫時失敗。' });
-        }
+      storeMessages(groupId, userId, clientOffset, content)
+      .then(() => {
+        if (callback) callback(); // 執行回調函數
+      })
+      .catch(error => {
+        console.error('儲存消息失敗:', error);
+        // 通知客戶端儲存失敗，可以選擇顯示一個提示
+        socket.emit('chat message error', { error: '儲存消息到資料庫時失敗。' });
       });
     });
 

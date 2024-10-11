@@ -348,8 +348,8 @@ function initializeChat() {
     reconnection: true,
     reconnectionAttempts: Infinity,
     reconnectionDelay: 1000,
-    timeout: 20000,
-    ackTimeout: 10000,
+    timeout: 5000,
+    ackTimeout: 5000,
     retries: 3
   });
 
