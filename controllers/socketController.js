@@ -14,21 +14,22 @@ export function setupSocketIO(io) {
         console.log(`用戶 ${socket.id} 加入群組 ${groupId}`);
         // 在 socket 物件上儲存 groupId
         socket.groupId = groupId;
-        if (!socket.recovered) {
-          console.log('Connection state not recovered, attempting to fetch messages...');
-          try {
-            const messages = await getMessages(groupId);
-            messages.forEach((data) => {
-              const { splitgroup_id: groupId, user_id: userId, user_name: userName, content, created_at: timestamp } = data;
-              const formattedData = { groupId, userId, userName, content, timestamp };
-              socket.emit('oldMessage', formattedData);
-            });
-          } catch (error) {
-            console.error('Failed to recover messages:', error); // 錯誤處理
-          }
-        }
+      // 立即允許用戶接收新消息，異步加載舊消息
+      if (!socket.recovered) {
+        socket.recovered = true;
+        console.log('Connection state not recovered, attempting to fetch messages...');
+        getMessages(groupId).then((messages) => {
+          messages.forEach((data) => {
+            const { splitgroup_id: groupId, user_id: userId, user_name: userName, content, created_at: timestamp } = data;
+            const formattedData = { groupId, userId, userName, content, timestamp };
+            socket.emit('oldMessage', formattedData);
+          });
+        }).catch((error) => {
+          console.error('Failed to recover messages:', error);
+        });
       }
-    });
+    }
+  });
 
     // 處理收到的消息
     socket.on('sendMessage', async(data, clientOffset, callback) => {
