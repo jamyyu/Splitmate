@@ -107,9 +107,10 @@ const server = http.createServer(app);
 // 創建 Socket.IO 伺服器並綁定到 HTTP 伺服器上
 const io = new Server(server, {
   cors: {
-    origin: "'https://splitmate.site/'", 
-    methods: ["GET", "POST"]
+    origin: 'https://splitmate.site/', 
+    methods: ['GET', 'POST']
   },
+  transports: ['websocket'],
   connectionStateRecovery: {}
 });
 
