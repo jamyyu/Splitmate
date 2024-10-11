@@ -1,3 +1,5 @@
+import { storeMessages, getMessages } from '../models/messagesModel.js';
+
 export function setupSocketIO(io) {
   io.on('connection', async (socket) => {
     console.log('新用戶已連接: ' + socket.id);
