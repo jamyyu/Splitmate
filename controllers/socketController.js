@@ -31,14 +31,11 @@ export function setupSocketIO(io) {
     });
 
     // 處理收到的消息
-    socket.on('sendMessage', async (data, clientOffset, callback) => {
+    socket.on('sendMessage', async (data, clientOffset) => {
       const { groupId, userId, userName, content } = data;
       io.to(`group_${groupId}`).emit('newMessage', data);
       // 儲存消息
       storeMessages(groupId, userId, clientOffset, content)
-      .then(() => {
-        if (callback) callback(); // 執行回調函數
-      })
       .catch(error => {
         console.error('儲存消息失敗:', error);
         // 通知客戶端儲存失敗，可以選擇顯示一個提示
